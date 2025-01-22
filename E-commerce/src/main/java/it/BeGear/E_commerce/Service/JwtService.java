@@ -40,6 +40,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+
     public String generateToken(Utente utente) {
         return generateToken(new HashMap<>(), utente);
     }
