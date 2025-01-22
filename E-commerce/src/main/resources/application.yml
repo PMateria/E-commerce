@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+spring:
+  application:
+    name: E-commerce
+
+  datasource:
+    #url: jdbc:mysql://host.docker.internal:3306/ecommerce
+    url: jdbc:mysql://localhost:3306/ecommerce
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+     ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    deserialization:
+      fail-on-unknown-properties: true
+logging:
+  pattern:
+    console: ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+  level:
+    org.springframework.security: DEBUG
