@@ -27,6 +27,12 @@ public class CommentiController {
         return ResponseEntity.ok(commenti);
     }
 
+    // Ottengo un solo commento
+    @GetMapping("/commenti/{commentoId}")
+    public ResponseEntity<CommentoDTO> getCommento (@PathVariable int commentoId){
+        CommentoDTO commentoDTO= commentoService.getCommentoById(commentoId);
+        return ResponseEntity.ok(commentoDTO);
+    }
 
     @DeleteMapping("/cancellaCommenti/{commentoId}")
     public ResponseEntity<String> eliminaCommento (@PathVariable int commentoId){

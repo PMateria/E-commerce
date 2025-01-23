@@ -46,6 +46,11 @@ public class CommentoService {
         return CommentoDTOMapper.commentoToDTO(salvaCommento);
     }
 
+    //Get per ottenere un commento tramide l'id dello stesso
+    public CommentoDTO getCommentoById(int commentoId){
+        Commento commento= commentoRepo.findById(commentoId).orElseThrow(() -> new RuntimeException("Commento non trovato"));
+        return CommentoDTOMapper.commentoToDTO(commento);
+    }
 
     //Metodo per eliminare un commento
     public void eliminaCommento(int commentoId){

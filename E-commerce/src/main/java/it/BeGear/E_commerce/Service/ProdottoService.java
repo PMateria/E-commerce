@@ -1,6 +1,5 @@
 package it.BeGear.E_commerce.Service;
 
-import it.BeGear.E_commerce.Dto.AcquistaProdottoDTO;
 import it.BeGear.E_commerce.Dto.FasciaDiPrezzo;
 import it.BeGear.E_commerce.Dto.ProdottoDTO;
 import it.BeGear.E_commerce.Dto.ProdottoDtoMapper;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ProdottoService {
@@ -31,10 +29,13 @@ public class ProdottoService {
     private UtenteService utenteService;
 
 
-
     public ProdottoDTO creaProdotto(ProdottoDTO prodottoDTO) {
         Prodotto prodotto = new Prodotto();
         ProdottoDtoMapper.DTOToProdotto(prodottoDTO, prodotto);
+
+        if (prodotto.getSconto() < 0 || prodotto.getSconto() > 100) {
+            throw new ScontoNonValidoException("Sconto non valido. Deve essere compreso tra 1 e 100");
+        }
 
         Prodotto savedProdotto = prodottoRepo.save(prodotto);
         return ProdottoDtoMapper.prodottoToDTO(savedProdotto, new ProdottoDTO());
@@ -57,6 +58,7 @@ public class ProdottoService {
                 new ProdottoAssenteException("Prodotto non trovato con id: " + id)
         );
 
+        // Modifico i campi descrizione, prezzo e quantità solo se non sono null o 0
         if (prodottoDTO.getDescrizione() != null) prodotto.setDescrizione(prodottoDTO.getDescrizione());
         if (prodottoDTO.getPrezzo() != 0) prodotto.setPrezzo(prodottoDTO.getPrezzo());
         if (prodottoDTO.getQuantita() >= 0) prodotto.setQuantita(prodottoDTO.getQuantita());
@@ -74,68 +76,36 @@ public class ProdottoService {
 
 
     @Transactional
-    public List<ProdottoDTO> acquistaProdotti(List<AcquistaProdottoDTO> acquisti, int utenteId) {
+    public ProdottoDTO acquistaProdotto(int quantitaRichiesta, int id, int utenteId) {
+        Prodotto prodotto = prodottoRepo.findById(id)
+                .orElseThrow(() -> new ProdottoAssenteException("Prodotto non trovato con id: " + id));
+
         Utente utente = utenteRepo.findById(utenteId)
                 .orElseThrow(() -> new UtenteAssenteException("Utente non trovato con id: " + utenteId));
 
-        // Mappa per tracciare i prodotti da acquistare
-        Map<Integer, Integer> prodottiDaAcquistare = acquisti.stream()
-                .collect(Collectors.toMap(
-                        AcquistaProdottoDTO::getId,
-                        AcquistaProdottoDTO::getQuantita
-                ));
-
-        // Recupera tutti i prodotti
-        List<Prodotto> prodotti = prodottoRepo.findAllById(prodottiDaAcquistare.keySet());
-
-        // Verifica l'esistenza di tutti i prodotti
-        if (prodotti.size() != prodottiDaAcquistare.size()) {
-            throw new ProdottoAssenteException("Alcuni prodotti richiesti non sono stati trovati");
+        if (prodotto.getQuantita() < quantitaRichiesta) {
+            throw new QuantitaNonDisponibileException(
+                    "Quantità richiesta (" + quantitaRichiesta + ") non disponibile. Disponibilità attuale: " + prodotto.getQuantita());
         }
 
-        // Calcolo del costo totale e verifica disponibilità
-        double costoTotale = 0.0;
-        for (Prodotto prodotto : prodotti) {
-            int quantitaRichiesta = prodottiDaAcquistare.get(prodotto.getId());
+        double prezzoTotale = prodotto.getPrezzo() * quantitaRichiesta;
 
-            // Verifica disponibilità quantità
-            if (prodotto.getQuantita() < quantitaRichiesta) {
-                throw new QuantitaNonDisponibileException(
-                        "Quantità non disponibile per il prodotto " + prodotto.getId() +
-                                ". Richiesta: " + quantitaRichiesta +
-                                ", Disponibile: " + prodotto.getQuantita()
-                );
-            }
-
-            // Calcolo costo totale
-            costoTotale += prodotto.getPrezzo() * quantitaRichiesta;
+        if (utente.getSaldoWallett() < prezzoTotale) {
+            throw new SaldoInsufficienteException("Saldo insufficiente per acquistare il prodotto. Richiesto: "
+                    + prezzoTotale + ", Disponibile: " + utente.getSaldoWallett());
         }
 
-        // Verifica saldo utente
-        if (utente.getSaldoWallett() < costoTotale) {
-            throw new SaldoInsufficienteException("Saldo insufficiente. Richiesto: "
-                    + costoTotale + ", Disponibile: " + utente.getSaldoWallett());
-        }
-
-        // Aggiornamento saldo utente
-        utente.setSaldoWallett(utente.getSaldoWallett() - costoTotale);
+        // Sottrai il saldo e aggiorna il wallet dell'utente
+        utente.setSaldoWallett(utente.getSaldoWallett() - prezzoTotale);
         utenteRepo.save(utente);
 
-        // Aggiornamento prodotti
-        List<Prodotto> prodottiAggiornati = new ArrayList<>();
-        for (Prodotto prodotto : prodotti) {
-            int quantitaRichiesta = prodottiDaAcquistare.get(prodotto.getId());
+        // Aggiorna la quantità del prodotto
+        prodotto.setQuantita(prodotto.getQuantita() - quantitaRichiesta);
+        prodotto.setQuantitaVenduta(prodotto.getQuantitaVenduta() + quantitaRichiesta);
 
-            prodotto.setQuantita(prodotto.getQuantita() - quantitaRichiesta);
-            prodotto.setQuantitaVenduta(prodotto.getQuantitaVenduta() + quantitaRichiesta);
+        Prodotto updatedProdotto = prodottoRepo.save(prodotto);
 
-            prodottiAggiornati.add(prodottoRepo.save(prodotto));
-        }
-
-        // Conversione in DTO
-        return prodottiAggiornati.stream()
-                .map(p -> ProdottoDtoMapper.prodottoToDTO(p, new ProdottoDTO()))
-                .collect(Collectors.toList());
+        return ProdottoDtoMapper.prodottoToDTO(updatedProdotto, new ProdottoDTO());
     }
 
 
@@ -143,7 +113,6 @@ public class ProdottoService {
         String username= principal.getName();
         Utente utente= utenteRepo.findByUsername(username).orElseThrow(() -> new UtenteAssenteException("Utente con username" + username + "non trovato"));
         double saldoWallett = utente.getSaldoWallett();
-
         // Filtro i prodotti con prezzo minore o uguale al saldo del wallett
         List<Prodotto> prodottiFiltrati= prodottoRepo.findProdottiByPrezzoMax(saldoWallett);
 

@@ -11,7 +11,6 @@ public class ProdottoDTO {
     private int quantita;
     private int quantitaVenduta;
 
-
     @Max(value = 100)
     private int sconto;
 

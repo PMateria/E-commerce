@@ -27,6 +27,7 @@ public class Prodotto extends BaseEntity {
     private int quantitaVenduta;
     private int codiceProdotto;
 
+    @Min(value = 1, message = "Lo sconto deve essere almeno 1")
     @Max(value = 100, message = "Lo sconto non può superare il 100")
     private int sconto;
     private String tipologia;
@@ -37,6 +38,5 @@ public class Prodotto extends BaseEntity {
 
     @OneToMany(mappedBy = "prodotto", fetch = FetchType.LAZY)
     private List<Commento> commenti;
-
 
 }
