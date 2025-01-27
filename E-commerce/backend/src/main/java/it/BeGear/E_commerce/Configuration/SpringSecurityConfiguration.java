@@ -11,10 +11,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 
 @Configuration
 public class SpringSecurityConfiguration {
+
 
 
     @Autowired
@@ -28,8 +35,6 @@ public class SpringSecurityConfiguration {
                         "/gestione_utenti/aggiungiSaldo",
                         "/gestione_utenti/sottraiSaldo",
                         "/gestione_utenti/getSaldo",
-                        "/gestione_prodotti/filtratiPerSaldo",
-                        "/gestione_prodotti/prodottiPiuVendutiPerTutteLeFasce",
                         "/gestione_utenti/getUtente/{id}",
                         "/gestione_utenti/getUtenti",
                         "/gestione_prodotti/acquistaProdotti",
@@ -38,6 +43,10 @@ public class SpringSecurityConfiguration {
                         "/gestione_carrelli/leggiCarrello/{id}",
                         "gestione_carrelli/aggiungi/{utenteId}/{prodottoId}/{quantita}").authenticated()
                 .requestMatchers("/gestione_prodotti/leggiProdotti",
+                        "/gestione_prodotti/filtratiPerSaldo",
+                        "/gestione_prodotti/prodottiPiuVendutiPerTutteLeFasce",
+
+
                         "/gestione_utenti/aggiungiUtente",
                         "/gestione_prodotti/prodottiPiuVenduti/{fascia}",
                         "/gestione_utenti/login",
@@ -48,9 +57,22 @@ public class SpringSecurityConfiguration {
                         "/gestione_prodotti/modificaProdotto/{id}",
                         "/gestione_prodotti/cancellaProdotto/{id}",
                         "/commenti/cancellaCommenti/{id}").hasAuthority("ADMIN"));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow your Angular app's origin
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

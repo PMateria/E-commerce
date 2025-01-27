@@ -136,8 +136,8 @@ public class ProdottoController {
         }
     }
 
-    @GetMapping ("/prodottiPiVendutiPerTutteLeFasce")
-    public ResponseEntity<Object> getProdottiPiVendutiPerTutteLeFasce(@RequestParam int limitPerFascia){
+    @GetMapping ("/prodottiPiuVendutiPerTutteLeFasce")
+    public ResponseEntity<Object> getProdottiPiuVendutiPerTutteLeFasce(@RequestParam int limitPerFascia){
         try{
             Map<FasciaDiPrezzo, List<ProdottoDTO>> risultati =
                     prodottoService.getProdottiPiuVendutiPerTutteLeFasce(limitPerFascia);
