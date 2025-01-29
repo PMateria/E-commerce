@@ -10,6 +10,7 @@ public class ProdottoDTO {
     private int prezzo;
     private int quantita;
     private int quantitaVenduta;
+    private Long categoriaId;
 
     @Max(value = 100)
     private int sconto;

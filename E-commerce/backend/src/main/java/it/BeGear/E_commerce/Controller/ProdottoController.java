@@ -2,16 +2,14 @@ package it.BeGear.E_commerce.Controller;
 
 import it.BeGear.E_commerce.Costanti.ProdottoCostanti;
 import it.BeGear.E_commerce.Costanti.UtenteCostanti;
-import it.BeGear.E_commerce.Dto.FasciaDiPrezzo;
-import it.BeGear.E_commerce.Dto.ProdottoDTO;
-import it.BeGear.E_commerce.Dto.ResponseDTO;
-import it.BeGear.E_commerce.Dto.UtenteDTO;
+import it.BeGear.E_commerce.Dto.*;
+import it.BeGear.E_commerce.Entity.Categoria;
 import it.BeGear.E_commerce.Entity.Prodotto;
-import it.BeGear.E_commerce.Exception.ProdottoAssenteException;
-import it.BeGear.E_commerce.Exception.ProdottoDoppioException;
-import it.BeGear.E_commerce.Exception.QuantitaNonDisponibileException;
-import it.BeGear.E_commerce.Exception.UtenteAssenteException;
+import it.BeGear.E_commerce.Entity.Utente;
+import it.BeGear.E_commerce.Exception.*;
+import it.BeGear.E_commerce.Repository.CategoriaRepo;
 import it.BeGear.E_commerce.Repository.ProdottoRepo;
+import it.BeGear.E_commerce.Repository.UtenteRepo;
 import it.BeGear.E_commerce.Service.ProdottoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -26,6 +26,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/gestione_prodotti", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -36,21 +37,24 @@ public class ProdottoController {
     private ProdottoService prodottoService;
     @Autowired
     private ProdottoRepo prodottoRepo;
+    @Autowired
+    private UtenteRepo utenteRepo;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
 
-    //Crud per la creazione di un prodotto
+
     @PostMapping("/creaProdotto")
     public ResponseEntity<ResponseDTO> creaProdotto(@Valid @RequestBody ProdottoDTO prodottoDTO) {
-        ProdottoDTO creaProdotto = prodottoService.creaProdotto(prodottoDTO);
-        if (creaProdotto != null) {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(new ResponseDTO(ProdottoCostanti.STATUS_201, ProdottoCostanti.STATUS_201_MESSAGE));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseDTO(ProdottoCostanti.STATUS_400, ProdottoCostanti.STATUS_400_MESSAGE));
-        }
+        // Recupera l'utente autenticato
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Utente utente = utenteRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utente autenticato non trovato"));
+        ProdottoDTO creaProdotto = prodottoService.creaProdotto(prodottoDTO, utente.getId());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDTO(ProdottoCostanti.STATUS_201, ProdottoCostanti.STATUS_201_MESSAGE));
     }
-
 
     //Leggi prodotti associati ad un utente
     @GetMapping("/leggiProdotti")
@@ -69,7 +73,7 @@ public class ProdottoController {
         try {
             ProdottoDTO modificaProdotto = prodottoService.updateProdotto(id, prodottoDTO);
             if (modificaProdotto == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(ProdottoCostanti.STATUS_500, ProdottoCostanti.STATUS_500_MESSAGE)); // Risposta con corpo nullo
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDTO(ProdottoCostanti.STATUS_500, ProdottoCostanti.STATUS_500_MESSAGE));
             }
             return ResponseEntity.ok(modificaProdotto);
 

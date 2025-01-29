@@ -1,47 +1,98 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from '../service/product.service';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { filter, retry, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { forkJoin, Subscription, EMPTY, firstValueFrom } from 'rxjs';
+import { Category } from '../models/category.interface';
+import { Product } from '../models/product.interface';
 
-interface Product {
-  descrizione: string;
-  prezzo: number;
-  quantita: number;
-  quantitaVenduta: number;
-  sconto: number;
+
+interface CategoryGroup {
+  category: Category;
+  products: Product[];
 }
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
+  standalone: true,
+  imports: [CommonModule, RouterModule]
 })
-export class HomeComponent implements OnInit {
-  products: Product[] = [];
-  featuredProducts: Product[] = [];
 
+export class HomeComponent implements OnInit, OnDestroy {
+  products: any[] = [];
+  featuredProducts: any[] = [];
+  productsByCategories: CategoryGroup[] = [];
+  isLoading = true;
+  error: string | null = null;
+  private loadDataSubscription?: Subscription;
+  private navigationSubscription?: Subscription;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
-    // Uso il servizio per ottenere i prodotti dal backend
-    this.productService.getProducts().subscribe(
-      (data) => {
-        this.products = data;
-      },
-      (error) => {
-        console.error('Errore durante il recupero dei prodotti:', error);
+    this.loadData();
+    
+    this.navigationSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      if (this.router.url === '/' || this.router.url === '/home') {
+        this.loadData();
       }
-    );
+    });
+  }
 
-    // Uso il servizio per ottenere i prodotti piu venduti dal backend
-    this.productService.getTopSellingProducts(5).subscribe({
+  ngOnDestroy(): void {
+    this.loadDataSubscription?.unsubscribe();
+    this.navigationSubscription?.unsubscribe();
+  }
+
+  loadData(): void {
+    this.isLoading = true;
+    this.error = null;
+    
+
+    forkJoin({
+      products: this.productService.getProducts(),
+      featuredProducts: this.productService.getTopSellingProducts(5),
+      categories: this.productService.getCategories()
+    }).subscribe({
       next: (data) => {
-        console.log('Featured products data:', data); // Debug
-        this.featuredProducts = data;
+        this.products = Array.isArray(data.products) ? data.products : [];
+        this.featuredProducts = data.featuredProducts;
+        
+        if (Array.isArray(data.categories)) {
+          const categoryPromises = data.categories.map(async category => {
+            try {
+              const productsInCategory = await firstValueFrom(
+                this.productService.getProductsByCategory(category.nome)
+              );
+              return {
+                category,
+                products: productsInCategory || []
+              };
+            } catch (error) {
+              console.error(`Error loading products for ${category.nome}:`, error);
+              return { category, products: [] };
+            }
+          });
+  
+          Promise.all(categoryPromises).then(results => {
+            this.productsByCategories = results;
+            this.isLoading = false;
+          });
+        }
       },
-      error: (err) => console.error('Error loading featured products:', err)    
+      error: (error) => {
+        console.error('Error:', error);
+        this.error = 'Errore caricamento dati';
+        this.isLoading = false;
+      }
     });
   }
 }

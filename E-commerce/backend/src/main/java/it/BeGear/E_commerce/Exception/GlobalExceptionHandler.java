@@ -20,6 +20,9 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+
+
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -42,6 +45,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, body, headers, status, request);
     }
 
+    // Gestione delle eccezioni generali
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
+                webRequest.getDescription(false), // Contesto (path)
+                HttpStatus.NOT_FOUND,             // Stato HTTP
+                exception.getMessage(),           // Messaggio dell'errore
+                LocalDateTime.now()               // Timestamp
+        );
+        return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CategoriaNonTrovataException.class)
+    public ResponseEntity<String> handleCategoriaNonTrovata(CategoriaNonTrovataException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ProdottoDoppioException.class)
     public ResponseEntity<ErrorResponseDTO> handleAstronaveDoppiaException(ProdottoDoppioException exception, WebRequest webRequest) {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
@@ -52,6 +72,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.BAD_REQUEST);
     }
+
 
     @ExceptionHandler(ProdottoAssenteException.class)
     public ResponseEntity<ErrorResponseDTO> handleProdottoAssenteException(ProdottoAssenteException exception, WebRequest webRequest) {

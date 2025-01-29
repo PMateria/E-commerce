@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class ErrorResponseDTO extends Throwable {
+public class ErrorResponseDTO {
     private String apiPath;
     private HttpStatus httpStatus;
     private String errorMessage;

@@ -3,9 +3,11 @@ package it.BeGear.E_commerce.Service;
 import it.BeGear.E_commerce.Dto.FasciaDiPrezzo;
 import it.BeGear.E_commerce.Dto.ProdottoDTO;
 import it.BeGear.E_commerce.Dto.ProdottoDtoMapper;
+import it.BeGear.E_commerce.Entity.Categoria;
 import it.BeGear.E_commerce.Entity.Prodotto;
 import it.BeGear.E_commerce.Entity.Utente;
 import it.BeGear.E_commerce.Exception.*;
+import it.BeGear.E_commerce.Repository.CategoriaRepo;
 import it.BeGear.E_commerce.Repository.ProdottoRepo;
 import it.BeGear.E_commerce.Repository.UtenteRepo;
 import jakarta.transaction.Transactional;
@@ -17,9 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
-public class ProdottoService {
+public class    ProdottoService {
 
     @Autowired
     private ProdottoRepo prodottoRepo;
@@ -27,19 +30,34 @@ public class ProdottoService {
     private UtenteRepo utenteRepo;
     @Autowired
     private UtenteService utenteService;
+    @Autowired
+    private CategoriaRepo categoriaRepo;
 
 
-    public ProdottoDTO creaProdotto(ProdottoDTO prodottoDTO) {
+    public ProdottoDTO creaProdotto(ProdottoDTO prodottoDTO, int utenteId) {
+        Utente utente = utenteRepo.findById(utenteId)
+                .orElseThrow(() -> new RuntimeException("Utente con ID " + utenteId + " non trovato"));
+        Categoria categoria = categoriaRepo.findById(prodottoDTO.getCategoriaId())
+                .orElseThrow(() -> new CategoriaNonTrovataException("Categoria con ID " + prodottoDTO.getCategoriaId() + " non trovata"));
         Prodotto prodotto = new Prodotto();
         ProdottoDtoMapper.DTOToProdotto(prodottoDTO, prodotto);
-
-        if (prodotto.getSconto() < 0 || prodotto.getSconto() > 100) {
-            throw new ScontoNonValidoException("Sconto non valido. Deve essere compreso tra 1 e 100");
+        if (prodottoDTO.getSconto() == 0    ) {
+            prodotto.setSconto(0);
+        } else if (prodottoDTO.getSconto() <= 0 || prodottoDTO.getSconto() > 100) {
+            throw new ScontoNonValidoException("Lo sconto deve essere tra 1 e 100");
+        } else {
+            prodotto.setSconto(prodottoDTO.getSconto());
         }
-
-        Prodotto savedProdotto = prodottoRepo.save(prodotto);
-        return ProdottoDtoMapper.prodottoToDTO(savedProdotto, new ProdottoDTO());
+        prodotto.setUtente(utente);
+        prodotto.setCategoria(categoria);
+        Prodotto prodottoSalvato = prodottoRepo.save(prodotto);
+        ProdottoDTO prodottoSalvatoDTO = new ProdottoDTO();
+        ProdottoDtoMapper.prodottoToDTO(prodottoSalvato, prodottoSalvatoDTO);
+        return prodottoSalvatoDTO;
     }
+
+
+
 
 
     //Get di tutti i prodotti
@@ -58,13 +76,22 @@ public class ProdottoService {
                 new ProdottoAssenteException("Prodotto non trovato con id: " + id)
         );
 
-        // Modifico i campi descrizione, prezzo e quantità solo se non sono null o 0
+        // Modifica i campi
         if (prodottoDTO.getDescrizione() != null) prodotto.setDescrizione(prodottoDTO.getDescrizione());
         if (prodottoDTO.getPrezzo() != 0) prodotto.setPrezzo(prodottoDTO.getPrezzo());
         if (prodottoDTO.getQuantita() >= 0) prodotto.setQuantita(prodottoDTO.getQuantita());
+
+        // Aggiorna la categoria
+        if (prodottoDTO.getCategoriaId() != null) {
+            Categoria categoria = categoriaRepo.findById(prodottoDTO.getCategoriaId())
+                    .orElseThrow(() -> new RuntimeException("Categoria con ID " + prodottoDTO.getCategoriaId() + " non trovata"));
+            prodotto.setCategoria(categoria);
+        }
+
         Prodotto updatedProdotto = prodottoRepo.save(prodotto);
         return ProdottoDtoMapper.prodottoToDTO(updatedProdotto, new ProdottoDTO());
     }
+
 
     public boolean deleteProdotto(int id) {
         if (!prodottoRepo.existsById(id)) {
@@ -144,6 +171,11 @@ public class ProdottoService {
             risultati.put(fascia, getProdottiPiuVenduti(fascia, limitPerFascia));
         }
         return risultati;
+    }
+
+    public List<ProdottoDTO> getProdottiByCategoria(Categoria categoria) {
+        List<Prodotto> prodotti = prodottoRepo.findByCategoria(categoria);
+        return prodotti.stream().map(prodotto -> ProdottoDtoMapper.prodottoToDTO(prodotto, new ProdottoDTO())).collect(Collectors.toList());
     }
 
 }

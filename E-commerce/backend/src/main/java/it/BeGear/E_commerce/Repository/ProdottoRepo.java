@@ -1,5 +1,6 @@
 package it.BeGear.E_commerce.Repository;
 
+import it.BeGear.E_commerce.Entity.Categoria;
 import it.BeGear.E_commerce.Entity.Prodotto;
 import it.BeGear.E_commerce.Entity.Utente;
 import jakarta.transaction.Transactional;
@@ -31,4 +32,5 @@ public interface ProdottoRepo extends JpaRepository<Prodotto, Integer> {
     @Query("SELECT p FROM Prodotto p WHERE p.codiceProdotto IN :codiceProdotto")
     List<Prodotto> findByCodiceProdotto(@Param("codiceProdotto") List<Integer> codiceProdotto);
 
+    List<Prodotto> findByCategoria(Categoria categoria);
 }

@@ -31,7 +31,7 @@ public class SpringSecurityConfiguration {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/gestione_prodotti/creaProdotto",
+                .requestMatchers(
                         "/gestione_utenti/aggiungiSaldo",
                         "/gestione_utenti/sottraiSaldo",
                         "/gestione_utenti/getSaldo",
@@ -45,7 +45,16 @@ public class SpringSecurityConfiguration {
                 .requestMatchers("/gestione_prodotti/leggiProdotti",
                         "/gestione_prodotti/filtratiPerSaldo",
                         "/gestione_prodotti/prodottiPiuVendutiPerTutteLeFasce",
+                        "/gestione_prodotti/creaProdotto",
 
+                        // categorie
+
+                        "/gestione_categorie/creaCategoria",
+                        "/gestione_categorie/modificaCategoria/{id}",
+                        "/gestione_categorie/ottieniCategorie",
+                        "/gestione_categorie/cancellaCategoria/{id}",
+                        "/gestione_categorie/prodottiPerCategoria/{categoriaNome}",
+                        //////////////////////////////////////////////
 
                         "/gestione_utenti/aggiungiUtente",
                         "/gestione_prodotti/prodottiPiuVenduti/{fascia}",

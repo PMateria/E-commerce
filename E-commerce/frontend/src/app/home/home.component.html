@@ -459,15 +459,8 @@
           <div class="offcanvas-body">
             <ul id="navbar" class="navbar-nav fw-bold justify-content-end align-items-center flex-grow-1">
               <li class="nav-item dropdown">
-                <a class="nav-link me-5 active dropdown-toggle border-0" href="#" data-bs-toggle="dropdown"
-                  aria-expanded="false">Home</a>
+                <a class="nav-link me-5 active border-0" [routerLink]="['/']">Home</a>
                 <ul class="dropdown-menu fw-bold">
-                  <li>
-                    <a href="../../index.html" class="dropdown-item">Home V1</a>
-                  </li>
-                  <li>
-                    <a href="../../index.html" class="dropdown-item">Home V2 </a>
-                  </li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -641,55 +634,42 @@
       </div>
     </div>
   </section>
+  
   <section id="collection-products" class="py-2 my-2 py-md-5 my-md-5">
     <div class="container-md">
       <div class="row">
-      
-
-        <div class="col-lg-6 col-md-6">
-            <div class="collection-card card border-0 d-flex flex-row align-items-center">
-              <div class="image-container d-flex justify-content-center align-items-center" style="width: 400px;">
-                <img src="../../assets/images/collection-item1.jpg" 
-                     alt="product-item" 
-                     class="border-rounded-10 img-fluid" 
-                     style="max-width: 400px; height: 300px; object-fit: cover;">
-              </div>
-              <div class="card-detail p-4 m-4 p-lg-5 m-lg-5">
-                <h3 class="card-title display-3">
-                  <a href="#">Minimal Collection</a>
-                </h3>
-                <a href="#" class="text-uppercase mt-4 d-inline-block text-hover fw-bold">Shop Now</a>
-              </div>
+        <div class="col-lg-6 col-md-6" *ngFor="let categoryGroup of productsByCategories">
+          <!-- Mantieni la struttura del card ma usa *ngFor per iterare sulle categorie -->
+          <div class="collection-card card border-0 d-flex flex-row align-items-center">
+            <div class="image-container d-flex justify-content-center align-items-center" style="width: 400px;">
+              <img src="../../assets/images/collection-item1.jpg" 
+                   alt="{{categoryGroup.category.nome}}" 
+                   class="border-rounded-10 img-fluid" 
+                   style="max-width: 400px; height: 300px; object-fit: cover;">
+            </div>
+            <div class="card-detail p-4 m-4 p-lg-5 m-lg-5">
+              <h3 class="card-title display-3">
+                <a [routerLink]="['/collection', categoryGroup.category.id]">
+                  {{categoryGroup.category.nome}} Collection
+                </a>
+              </h3>
+              <p class="text-muted">{{categoryGroup.products.length}} products</p>
+              <a [routerLink]="['/collection', categoryGroup.category.id]" 
+                 class="text-uppercase mt-4 d-inline-block text-hover fw-bold">
+                Shop Now
+              </a>
             </div>
           </div>
-          
-          <div class="col-lg-6 col-md-6">
-            <div class="collection-card card border-0 d-flex flex-row align-items-center">
-              <div class="image-container d-flex justify-content-center align-items-center" style="width: 400px;">
-                <img src="../../assets/images/collection-item2.jpg" 
-                     alt="product-item" 
-                     class="border-rounded-10 img-fluid" 
-                     style="max-width: 400px; height: 300px; object-fit: cover;">
-              </div>
-              <div class="card-detail p-4 m-4 p-lg-5 m-lg-5">
-                <h3 class="card-title display-3">
-                  <a href="#">Sneakers Collection</a>
-                </h3>
-                <a href="#" class="text-uppercase mt-4 d-inline-block text-hover fw-bold">Shop Now</a>
-              </div>
-            </div>
-          </div>
-          
+        </div>
       </div>
     </div>
   </section>
+
   <section id="featured-products" class="product-store">
     <div class="container-md">
       <div class="display-header d-flex align-items-center justify-content-between">
         <h2 class="section-title text-uppercase">Featured Products</h2>
         
-        <!-- Remove debug output -->
-        <!-- <pre>{{ featuredProducts | json }}</pre> -->
         
         <div class="btn-right">
           <a href="#" class="d-inline-block text-uppercase text-hover fw-bold">View all</a>
