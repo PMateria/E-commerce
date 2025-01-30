@@ -10,6 +10,7 @@ public class ProdottoDtoMapper {
         prodottoDTO.setQuantitaVenduta(prodotto.getQuantitaVenduta());
         prodottoDTO.setPrezzo(prodotto.getPrezzo());
         prodottoDTO.setSconto(prodotto.getSconto());
+        prodottoDTO.setImmagineUrl(prodotto.getImmagineUrl());
         return prodottoDTO;
     }
 
@@ -19,6 +20,7 @@ public class ProdottoDtoMapper {
         prodotto.setQuantitaVenduta(prodottoDTO.getQuantitaVenduta());
         prodotto.setPrezzo(prodottoDTO.getPrezzo());
         prodotto.setSconto(prodottoDTO.getSconto());
+        prodotto.setImmagineUrl(prodottoDTO.getImmagineUrl());
         return prodotto;
     }
 

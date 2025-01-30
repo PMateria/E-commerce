@@ -52,17 +52,11 @@ public class CategoriaController {
     @GetMapping("/prodottiPerCategoria/{categoriaNome}")
     public ResponseEntity<List<ProdottoDTO>> getProdottiPerCategoria(@PathVariable String categoriaNome) {
         try {
-            // Recupera la categoria dal nome
             Categoria categoria = categoriaRepo.findByNome(categoriaNome)
                     .orElseThrow(() -> new RuntimeException("Categoria con nome: " + categoriaNome + " non trovata"));
-
-            // Recupera i prodotti associati a questa categoria
             List<ProdottoDTO> prodotti = prodottoService.getProdottiByCategoria(categoria);
-
-            // Ritorna la risposta con i prodotti
             return ResponseEntity.ok(prodotti);
         } catch (Exception e) {
-            // Restituisci una risposta con una lista vuota o un errore in formato List<ProdottoDTO>
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ArrayList<ProdottoDTO>());
         }

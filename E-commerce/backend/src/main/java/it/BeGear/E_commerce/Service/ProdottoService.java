@@ -1,8 +1,6 @@
 package it.BeGear.E_commerce.Service;
 
-import it.BeGear.E_commerce.Dto.FasciaDiPrezzo;
-import it.BeGear.E_commerce.Dto.ProdottoDTO;
-import it.BeGear.E_commerce.Dto.ProdottoDtoMapper;
+import it.BeGear.E_commerce.Dto.*;
 import it.BeGear.E_commerce.Entity.Categoria;
 import it.BeGear.E_commerce.Entity.Prodotto;
 import it.BeGear.E_commerce.Entity.Utente;
@@ -12,13 +10,13 @@ import it.BeGear.E_commerce.Repository.ProdottoRepo;
 import it.BeGear.E_commerce.Repository.UtenteRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,25 +30,42 @@ public class    ProdottoService {
     private UtenteService utenteService;
     @Autowired
     private CategoriaRepo categoriaRepo;
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
 
-    public ProdottoDTO creaProdotto(ProdottoDTO prodottoDTO, int utenteId) {
+    public ProdottoDTO creaProdotto(ProdottoDTO prodottoDTO, int utenteId, MultipartFile immagine) {
+
         Utente utente = utenteRepo.findById(utenteId)
                 .orElseThrow(() -> new RuntimeException("Utente con ID " + utenteId + " non trovato"));
         Categoria categoria = categoriaRepo.findById(prodottoDTO.getCategoriaId())
                 .orElseThrow(() -> new CategoriaNonTrovataException("Categoria con ID " + prodottoDTO.getCategoriaId() + " non trovata"));
+
         Prodotto prodotto = new Prodotto();
         ProdottoDtoMapper.DTOToProdotto(prodottoDTO, prodotto);
-        if (prodottoDTO.getSconto() == 0    ) {
+
+
+        // Gestione dello sconto
+        if (prodottoDTO.getSconto() == 0) {
             prodotto.setSconto(0);
         } else if (prodottoDTO.getSconto() <= 0 || prodottoDTO.getSconto() > 100) {
             throw new ScontoNonValidoException("Lo sconto deve essere tra 1 e 100");
         } else {
             prodotto.setSconto(prodottoDTO.getSconto());
         }
+        if (immagine != null && !immagine.isEmpty()) {
+            try {
+                String imageUrl = cloudinaryService.uploadImage(immagine);
+                prodotto.setImmagineUrl(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Errore durante l'upload dell'immagine", e);
+            }
+        }
+
         prodotto.setUtente(utente);
         prodotto.setCategoria(categoria);
         Prodotto prodottoSalvato = prodottoRepo.save(prodotto);
+
         ProdottoDTO prodottoSalvatoDTO = new ProdottoDTO();
         ProdottoDtoMapper.prodottoToDTO(prodottoSalvato, prodottoSalvatoDTO);
         return prodottoSalvatoDTO;
@@ -70,18 +85,39 @@ public class    ProdottoService {
         return prodottoDTO;
     }
 
+    public ProdottoDTO getProductById(int id) {
+        Prodotto prodotto = prodottoRepo.findById(id).orElseThrow(() ->
+                new ProdottoAssenteException("Prodotto con id " + id + " non trovato")
+        );
+        return ProdottoDtoMapper.prodottoToDTO(prodotto, new ProdottoDTO());
+    }
 
-    public ProdottoDTO updateProdotto(int id, ProdottoDTO prodottoDTO) {
+
+    public ProdottoDTO updateProdotto(int id, ProdottoDTO prodottoDTO, MultipartFile immagine) {
         Prodotto prodotto = prodottoRepo.findById(id).orElseThrow(() ->
                 new ProdottoAssenteException("Prodotto non trovato con id: " + id)
         );
 
-        // Modifica i campi
+        // Aggiorna i campi esistenti
         if (prodottoDTO.getDescrizione() != null) prodotto.setDescrizione(prodottoDTO.getDescrizione());
         if (prodottoDTO.getPrezzo() != 0) prodotto.setPrezzo(prodottoDTO.getPrezzo());
         if (prodottoDTO.getQuantita() >= 0) prodotto.setQuantita(prodottoDTO.getQuantita());
 
-        // Aggiorna la categoria
+        // Aggiorna l'immagine se presente
+        if (immagine != null && !immagine.isEmpty()) {
+            try {
+                // Se c'è già un'immagine, elimina quella vecchia
+                if (prodotto.getImmagineUrl() != null) {
+                    cloudinaryService.deleteImage(prodotto.getImmagineUrl());
+                }
+                String imageUrl = cloudinaryService.uploadImage(immagine);
+                prodotto.setImmagineUrl(imageUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Errore durante l'aggiornamento dell'immagine", e);
+            }
+        }
+
+        // Aggiorna la categoria se specificata
         if (prodottoDTO.getCategoriaId() != null) {
             Categoria categoria = categoriaRepo.findById(prodottoDTO.getCategoriaId())
                     .orElseThrow(() -> new RuntimeException("Categoria con ID " + prodottoDTO.getCategoriaId() + " non trovata"));

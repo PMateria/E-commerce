@@ -148,60 +148,80 @@
   </div>
 
   <!-- quick view -->
-  <div class="modal fade" id="modaltoggle" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
+  <div class="modal fade" id="modaltoggle" tabindex="-1" (hidden.bs.modal)="resetQuantity()"
+  (keydown.escape)="resetQuantity()">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">
           <div class="col-lg-12 col-md-12 me-3">
             <div class="image-holder">
-              <img src="assets/images/summary-item1.jpg" alt="Shoes"> images/summary-item1.jpg
+              <img [src]="selectedProduct?.immagineUrl || 'assets/images/summary-item1.jpg'" 
+                   [alt]="selectedProduct?.descrizione">
+                   
             </div>
           </div>
           <div class="col-lg-12 col-md-12">
             <div class="summary">
               <div class="summary-content fs-6">
                 <div class="product-header d-flex justify-content-between mt-4">
-                  <h3 class="display-7">Running Shoes</h3>
+                  <h3 class="display-7">{{selectedProduct?.descrizione}}</h3>
                   <div class="modal-close-btn">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                  </div>
+                    <button type="button" 
+                    class="btn-close" 
+                    data-bs-dismiss="modal" 
+                    (click)="resetQuantity()" 
+                    aria-label="Close">
+                 </button>  
+                
                 </div>
-                <span class="product-price fs-3">$99</span>
+                </div>
+                <span class="product-price fs-3">Sconto : {{selectedProduct?.sconto}} %</span>
                 <div class="product-details">
-                  <p class="fs-7">Buy good shoes and a good mattress, because when you're not in one you're in the
-                    other. With four pairs of shoes, I can travel the world.</p>
                 </div>
                 <ul class="select">
                   <li>
-                    <strong>Colour Shown:</strong> Red, White, Black
+                    <strong>Quantita: {{selectedProduct?.quantita}}</strong>
                   </li>
                   <li>
-                    <strong>Style:</strong> SM3018-100
+                    <strong>€{{selectedProduct?.prezzo}}</strong> 
                   </li>
                 </ul>
                 <div class="variations-form shopify-cart">
                   <div class="row">
                     <div class="col-md-6">
+                      <!-- Update quantity controls in modal -->
                       <div class="quantity d-flex pb-4">
-                        <div
-                          class="qty-number align-top qty-number-plus d-flex justify-content-center align-items-center text-center">
-                          <span class="increase-qty plus">
-                            <svg class="plus">
-                              <use xlink:href="#plus"></use>
-                            </svg>
-                          </span>
-                        </div>
-                        <input type="number" id="quantity_001" class="input-text text-center" step="1" min="1" name="quantity" value="1" title="Qty">
-                        <div
-                          class="qty-number qty-number-minus d-flex justify-content-center align-items-center text-center">
-                          <span class="increase-qty minus">
+                        <div class="qty-number qty-number-minus d-flex justify-content-center align-items-center text-center">
+                          <button type="button" 
+                                  (click)="decrementQty()" 
+                                  class="btn btn-light rounded-0 rounded-start btn-number"
+                                  [disabled]="quantity <= 1">
                             <svg class="minus">
                               <use xlink:href="#minus"></use>
                             </svg>
-                          </span>
+                          </button>
+                        </div>
+                        
+                        <input type="number" 
+                               [(ngModel)]="quantity" 
+                               class="input-text text-center" 
+                               min="1" 
+                               [max]="selectedProduct?.quantita"
+                               name="quantity">
+                        
+                        <div class="qty-number qty-number-plus d-flex justify-content-center align-items-center text-center">
+                          <button type="button" 
+                                  (click)="incrementQty()"
+                                  class="btn btn-light rounded-0 rounded-end btn-number"
+                                  [disabled]="selectedProduct && quantity >= selectedProduct.quantita">
+                            <svg class="plus">
+                              <use xlink:href="#plus"></use>
+                            </svg>
+                          </button>
                         </div>
                       </div>
+
+                      
                     </div>
                     <div class="col-md-6">
                       <a rel="nofollow" data-no-instant="" href="#" class="out-stock button">Out of stock</a>
@@ -209,13 +229,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- variations-form -->
-                <div class="categories d-flex flex-wrap pt-3">
-                  <strong class="pe-2">Categories:</strong>
-                  <a href="#" title="categories">Clothing,</a>
-                  <a href="#" title="categories">Men's Clothes,</a>
-                  <a href="#" title="categories">Tops & T-Shirts</a>
-                </div>
+                
               </div>
             </div>
           </div>
@@ -225,7 +239,7 @@
   </div>
   <!-- / quick view -->
 
-  <div class="modal fade" id="modallong" tabindex="-1" aria-modal="true" role="dialog">
+  <div class="modal fade" id="modallong" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -235,17 +249,15 @@
         <div class="modal-body">
           <div class="shopping-cart">
             <div class="shopping-cart-content">
-              <div class="mini-cart cart-list p-0 mt-3">
-                <div class="mini-cart-item d-flex border-bottom pb-3">
-                  <div class="col-lg-2 col-md-3 col-sm-2 me-4">
-                    <a href="#" title="product-image">
-                      <img src="../../assets/images/single-product-thumb1.jpg" class="img-fluid" alt="single-product-item">
-                      
-                    </a>
-                  </div>
-                  <div class="col-lg-9 col-md-8 col-sm-8">
-                    <div class="product-header d-flex justify-content-between align-items-center mb-3">
-                      <h4 class="product-title fs-6 me-5">Sport Shoes For Men</h4>
+              <div class="mini-cart cart-list p-0 mt-3">  <div class="mini-cart-item d-flex border-bottom pb-3">
+                <div class="col-lg-2 col-md-3 col-sm-2 me-4">
+                  <a href="#" title="product-image">
+                    <img [src]="selectedProduct?.immagine" class="img-fluid" [alt]="selectedProduct?.descrizione">
+                  </a>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-8">
+                  <div class="product-header d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="product-title fs-6 me-5">{{selectedProduct?.descrizione}}</h4>            
                       <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
                         data-cart_item_key="abc" data-product_sku="">
                         <svg class="close">
@@ -271,7 +283,7 @@
                         </button>
                       </div>
                       <div class="price-code">
-                        <span class="product-price fs-6">$99</span>
+                        <span class="product-price fs-6">€{{selectedProduct?.prezzo}}</span>
                       </div>
                     </div>
                     <!-- quantity-price -->
@@ -343,7 +355,7 @@
   </div>
   <!-- cart view -->
 
-  <div class="modal fade" id="modallogin" tabindex="-1" aria-modal="true" role="dialog">
+  <div class="modal fade" id="modallogin" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered" role="document">
       <div class="modal-content p-4">
         <div class="modal-header mx-auto border-0">
@@ -678,25 +690,28 @@
       
       <div class="product-content padding-small">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
-          <div class="col mb-4" *ngFor="let product of featuredProducts">
-            <div class="product-card position-relative">
-              <div class="card-img">
-                <img src="assets/images/card-item1.jpg" alt="product-item" class="product-image img-fluid">
-                <div class="cart-concern position-absolute d-flex justify-content-center">
-                  <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
-                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modallong">
-                      <svg class="shopping-carriage">
-                        <use xlink:href="#shopping-carriage"></use>
-                      </svg>
-                    </button>
-                    <button type="button" class="btn btn-light" data-bs-target="#modaltoggle" data-bs-toggle="modal">
-                      <svg class="quick-view">
-                        <use xlink:href="#quick-view"></use>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+
+     <div class="col mb-4" *ngFor="let product of featuredProducts">
+  <div class="product-card position-relative">
+    <div class="card-img">
+      <img [src]="product.immagineUrl || 'assets/images/card-item1.jpg'" 
+           alt="{{product.descrizione}}" 
+           class="product-image img-fluid">
+      <div class="cart-concern position-absolute d-flex justify-content-center">
+        <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
+          <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modallong">
+            <svg class="shopping-carriage">
+              <use xlink:href="#shopping-carriage"></use>
+            </svg>
+          </button>
+          <button type="button" class="btn btn-light" (click)="openQuickView(product)" data-bs-target="#modaltoggle" data-bs-toggle="modal">
+            <svg class="quick-view">
+              <use xlink:href="#quick-view"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
               <div class="card-detail d-flex justify-content-between align-items-center mt-3">
                 <h3 class="card-title fs-6 fw-normal m-0">
                   <a href="#">{{product.descrizione}}</a>
@@ -718,36 +733,43 @@
         </div>
       </div>
       <div class="product-content padding-small">
-        <!-- Mantieni la stessa struttura ma usa *ngFor per iterare sui prodotti -->
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
-  <div class="col mb-4" *ngFor="let product of products">
-    <div class="product-card position-relative">
-      <div class="card-img">
-        <!-- Per il momento usa un'immagine placeholder finché non aggiungi le immagini al backend -->
-        <img src="../../assets/images/card-item1.jpg" alt="product-item" class="product-image img-fluid">
-        <div class="cart-concern position-absolute d-flex justify-content-center">
-          <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
-            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modallong">
-              <svg class="shopping-carriage">
-                <use xlink:href="#shopping-carriage"></use>
-              </svg>
-            </button>
-            <button type="button" class="btn btn-light" data-bs-target="#modaltoggle" data-bs-toggle="modal">
-              <svg class="quick-view">
-                <use xlink:href="#quick-view"></use>
-              </svg>
-            </button>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
+
+
+          <div class="col mb-4" *ngFor="let product of products">
+            <div class="product-card position-relative">
+              <div class="card-img">
+                <img [src]="product.immagineUrl || 'assets/images/card-item1.jpg'" 
+                     alt="{{product.descrizione}}" 
+                     class="product-image img-fluid">
+                <div class="cart-concern position-absolute d-flex justify-content-center">
+                  <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modallong">
+                      <svg class="shopping-carriage">
+                        <use xlink:href="#shopping-carriage"></use>
+                      </svg>
+                    </button>
+
+
+                    <button type="button" class="btn btn-light" 
+                    (click)="openQuickView(product)" 
+                    data-bs-target="#modaltoggle" 
+                    data-bs-toggle="modal">
+                    <svg class="quick-view">
+                    <use xlink:href="#quick-view"></use>
+                    </svg>
+                  </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-detail d-flex justify-content-between align-items-center mt-3">
+                <h3 class="card-title fs-6 fw-normal m-0">
+                  <a href="#">{{product.descrizione}}</a>
+                </h3>
+                <span class="card-price fw-bold">€{{product.prezzo}}</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="card-detail d-flex justify-content-between align-items-center mt-3">
-        <h3 class="card-title fs-6 fw-normal m-0">
-          <a href="../../index.html">{{product.descrizione}}</a>
-        </h3>
-        <span class="card-price fw-bold">${{product.prezzo}}</span>
-      </div>
-    </div>
-  </div>
         </div>
       </div>
     </div>

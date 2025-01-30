@@ -47,8 +47,9 @@ public class SpringSecurityConfiguration {
                         "/gestione_prodotti/prodottiPiuVendutiPerTutteLeFasce",
                         "/gestione_prodotti/creaProdotto",
 
-                        // categorie
 
+                        "/gestione_prodotti/getProdottoById/{id}",
+                        // categorie
                         "/gestione_categorie/creaCategoria",
                         "/gestione_categorie/modificaCategoria/{id}",
                         "/gestione_categorie/ottieniCategorie",

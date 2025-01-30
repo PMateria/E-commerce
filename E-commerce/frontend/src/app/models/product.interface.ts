@@ -1,4 +1,5 @@
 export interface Product {
+  id: any;
   descrizione: string;
   prezzo: number;
   quantita: number;
@@ -6,4 +7,5 @@ export interface Product {
   categoriaId: number;
   sconto: number;
   categoria: string;
+  immagine: string;
 }

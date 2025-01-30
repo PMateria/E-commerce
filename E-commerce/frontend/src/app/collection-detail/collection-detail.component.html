@@ -1,80 +1,61 @@
 <div class="header-top border-bottom py-2">
-    <div class="container-lg">
-      <div class="row justify-content-evenly">
-        <div class="col d-flex align-items-center">
-          <a [routerLink]="['/']" routerLinkActive="active" (click)="navigateToHome()">Home</a>
-          <ul class="social-links list-unstyled d-flex m-0">
-            <li class="pe-2"><a href="#"><svg width="20" height="20" class="facebook"><use xlink:href="#facebook"></use></svg></a></li>
-            <li class="pe-2"><a href="#"><svg width="20" height="20" class="instagram"><use xlink:href="#instagram"></use></svg></a></li>
-            <li class="pe-2"><a href="#"><svg width="20" height="20" class="youtube"><use xlink:href="#youtube"></use></svg></a></li>
-            <li><a href="#"><svg width="20" height="20" class="pinterest"><use xlink:href="#pinterest"></use></svg></a></li>
-          </ul>
-        </div>
-        <div class="col d-none d-md-block">
-          <p class="text-center text-black m-0"><strong>Special Offer</strong>: Free Shipping on all the orders above $100 </p>
-        </div>
-        <div class="col">
-          <ul class="d-flex justify-content-end gap-3 list-unstyled m-0">
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Cart</a></li>
-            <li><a href="#">Login</a></li>
-          </ul>
-        </div>
+  <div class="container-lg">
+    <div class="row justify-content-evenly">
+      <div class="col d-flex align-items-center">
+        <a [routerLink]="['/']" routerLinkActive="active" (click)="navigateToHome()">Home</a>
+        <ul class="social-links list-unstyled d-flex m-0">
+          <li class="pe-2"><a href="#"><svg width="20" height="20" class="facebook"><use xlink:href="#facebook"></use></svg></a></li>
+          <li class="pe-2"><a href="#"><svg width="20" height="20" class="instagram"><use xlink:href="#instagram"></use></svg></a></li>
+          <li class="pe-2"><a href="#"><svg width="20" height="20" class="youtube"><use xlink:href="#youtube"></use></svg></a></li>
+          <li><a href="#"><svg width="20" height="20" class="pinterest"><use xlink:href="#pinterest"></use></svg></a></li>
+        </ul>
+      </div>
+      <div class="col d-none d-md-block">
+        <p class="text-center text-black m-0"><strong>Special Offer</strong>: Free Shipping on all the orders above $100 </p>
+      </div>
+      <div class="col">
+        <ul class="d-flex justify-content-end gap-3 list-unstyled m-0">
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Cart</a></li>
+          <li><a href="#">Login</a></li>
+        </ul>
       </div>
     </div>
   </div>
+</div>
 
 <section id="collection-detail" class="product-store py-5">
-    <div class="container-md">
-      <!-- Loading State -->
-      <div *ngIf="isLoading" class="text-center py-5">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+  <div class="container-md">
+    <div *ngIf="!isLoading && !error">
+      <div class="display-header d-flex align-items-center justify-content-between mb-5">
+        <h2 class="section-title text-uppercase">{{category?.nome}} Collection</h2>
       </div>
-  
-      <!-- Error State -->
-      <div *ngIf="error" class="alert alert-danger" role="alert">
-        {{error}}
-      </div>
-  
-      <!-- Content -->
-      <div *ngIf="!isLoading && !error">
-        <div class="display-header d-flex align-items-center justify-content-between mb-5">
-          <h2 class="section-title text-uppercase">{{category?.nome}} Collection</h2>
-        </div>
-        
-        <div class="product-content padding-small">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-            <div class="col mb-4" *ngFor="let product of products">
-              <div class="product-card position-relative">
-                <div class="card-img">
-                  <img src="/assets/images/card-item1.jpg" alt="product-item" class="product-image img-fluid">
-                  <div class="cart-concern position-absolute d-flex justify-content-center">
-                    <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
-                      <button type="button" class="btn btn-light">
-                        <svg class="shopping-carriage">
-                          <use xlink:href="#shopping-carriage"></use>
-                        </svg>
-                      </button>
-                      <button type="button" class="btn btn-light">
-                        <svg class="quick-view">
-                          <use xlink:href="#quick-view"></use>
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-detail d-flex justify-content-between align-items-center mt-3">
-                  <h3 class="card-title fs-6 fw-normal m-0">
-                    <a href="#">{{product.descrizione}}</a>
-                  </h3>
-                  <span class="card-price fw-bold">€{{product.prezzo}}</span>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+        <div class="col mb-4" *ngFor="let product of products; let i = index">
+          <div class="product-card position-relative">
+            <div class="card-img">
+              <img [src]="'/assets/images/card-item1.jpg'" 
+                   [alt]="product.descrizione" 
+                   class="product-image img-fluid">
+              <div class="cart-concern position-absolute d-flex justify-content-center">
+                <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
+                  <button type="button" class="btn btn-light" (click)="navigateToProductDetails(product, i)">
+                    <svg class="info-icon" width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
+            </div>
+            <div class="card-detail d-flex justify-content-between align-items-center mt-3">
+              <h3 class="card-title fs-6 fw-normal m-0">
+                <a href="javascript:void(0)" (click)="navigateToProductDetails(product, i)">{{product.descrizione}}</a>
+              </h3>
+              <span class="card-price fw-bold">€{{product.prezzo}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>

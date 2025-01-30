@@ -26,6 +26,7 @@ public class Prodotto extends BaseEntity {
     private int quantita;
     private int quantitaVenduta;
     private int codiceProdotto;
+    private String immagineUrl;
 
     @Max(value = 100, message = "Lo sconto non può superare il 100")
     private Integer sconto;

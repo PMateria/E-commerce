@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../service/product.service';
 import { CommonModule } from '@angular/common';
 import { tap, map, filter, switchMap } from 'rxjs/operators';
+import { ProductDetail } from '../models/ProductDetail.interface';
 
 @Component({
   selector: 'app-collection-detail',
@@ -11,21 +12,18 @@ import { tap, map, filter, switchMap } from 'rxjs/operators';
   templateUrl: './collection-detail.component.html',
   styleUrls: ['./collection-detail.component.css']
 })
-
-
 export class CollectionDetailComponent implements OnInit {
   products: any[] = [];
   category: any;
   isLoading = true;
   error: string | null = null;
 
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService
   ) {}
-
-
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -40,6 +38,20 @@ export class CollectionDetailComponent implements OnInit {
     });
   }
 
+  navigateToProductDetails(product: ProductDetail, index: number) {
+    if (!product || !product.id) {
+      console.error('Errore: ID prodotto non valido', product);
+      return;
+    }
+    
+    console.log('Navigazione verso prodotto con ID:', product.id);
+
+    this.router.navigate(['/product', product.id], {
+      state: { product }
+    });
+  }
+  
+
   private loadCategoryDetails(categoryId: number) {
     this.isLoading = true;
     
@@ -53,7 +65,9 @@ export class CollectionDetailComponent implements OnInit {
       switchMap(categoryName => this.productService.getProductsByCategory(categoryName))
     ).subscribe({
       next: (products) => {
-        this.products = products;
+        console.log('Received products:', products);
+        this.products = products.map((product, index) => ({ ...product, id: index + 1 }));
+        console.log(products, "ID PRODOTTO")
         this.isLoading = false;
       },
       error: (error) => {
@@ -63,35 +77,4 @@ export class CollectionDetailComponent implements OnInit {
       }
     });
   }
-  
-
- private loadProducts(categoryId: number) {
-  this.isLoading = true;
-
-  // First get category name using categoryId
-  this.productService.getCategories().pipe(
-    tap(categories => console.log('Categories loaded:', categories)),
-    map(categories => {
-      const category = categories.find(c => c.id === categoryId);
-      console.log('Found category:', category);
-      if (!category) {
-        throw new Error('Category not found');
-      }
-      return category.nome;
-    }),
-    tap(nome => console.log('Using category name:', nome)),
-    switchMap(categoryName => this.productService.getProductsByCategory(categoryName))
-  ).subscribe({
-    next: (products) => {
-      console.log('Products loaded:', products);
-      this.products = products;
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Detailed error:', err);
-      this.error = `Error loading products: ${err.message}`;
-      this.isLoading = false;
-    }
-  });
-}
 }

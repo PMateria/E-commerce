@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, Observable, of, retry, switchMap, tap } from 'rxjs';
+import { catchError, map, Observable, of, retry, switchMap, tap, throwError } from 'rxjs';
 import { Product } from '../models/product.interface';
 import { Category } from '../models/category.interface';
 import { FeaturedProductsResponse } from '../models/featuredProductResponse';
+import { ProductDetail } from '../models/ProductDetail.interface';
 
 
 interface ProdottiResponse {
@@ -62,6 +63,16 @@ export class ProductService {
       catchError(error => {
         console.error('Error fetching top selling products:', error);
         return of([]);
+      })
+    );
+  }
+
+  getProductById(productId: number): Observable<ProductDetail> {
+    const url = `${this.BASE_URL}/gestione_prodotti/getProdottoById/${productId}`;
+    return this.http.get<ProductDetail>(url).pipe(
+      catchError(error => {
+        console.error('Errore nel recupero del prodotto:', error);
+        return throwError(() => new Error('Errore nel recupero del prodotto'));
       })
     );
   }

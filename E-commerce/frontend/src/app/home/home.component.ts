@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter, retry, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { forkJoin, Subscription, EMPTY, firstValueFrom } from 'rxjs';
 import { Category } from '../models/category.interface';
 import { Product } from '../models/product.interface';
@@ -15,10 +16,10 @@ interface CategoryGroup {
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  templateUrl:'./home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, FormsModule]
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
@@ -29,10 +30,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   error: string | null = null;
   private loadDataSubscription?: Subscription;
   private navigationSubscription?: Subscription;
+  selectedProduct: any;
+  quantity: number = 1;
+  
+
 
   constructor(
     private productService: ProductService,
     private router: Router,
+    
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +51,33 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.loadData();
       }
     });
+  }
+  openQuickView(product: Product) {
+    console.log('Selected product:', product); // Debug log
+    this.selectedProduct = product;
+  }
+
+  incrementQty() {
+    if((this.quantity + 1) <= this.selectedProduct.quantita) {
+      this.quantity++;
+    }
+  }
+  
+
+  decrementQty(){
+    if(this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  
+  @HostListener('document:keydown.escape', ['$event'])
+  handleEscapeKey(event: KeyboardEvent) {
+    this.resetQuantity();
+  }
+  
+  resetQuantity() {
+    this.quantity = 1;
   }
 
   ngOnDestroy(): void {

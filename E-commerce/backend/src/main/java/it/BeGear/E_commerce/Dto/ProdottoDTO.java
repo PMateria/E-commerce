@@ -11,6 +11,8 @@ public class ProdottoDTO {
     private int quantita;
     private int quantitaVenduta;
     private Long categoriaId;
+    private String immagineUrl;
+
 
     @Max(value = 100)
     private int sconto;
