@@ -1,5 +1,6 @@
 export interface Product {
   id: any;
+  nome: string;
   descrizione: string;
   prezzo: number;
   quantita: number;
@@ -8,4 +9,6 @@ export interface Product {
   sconto: number;
   categoria: string;
   immagine: string;
+  immagineUrl: string;
+  sessoProdotto: string;
 }

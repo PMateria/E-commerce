@@ -21,12 +21,14 @@ public class Prodotto extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String nome;
     private String descrizione;
     private int prezzo;
     private int quantita;
     private int quantitaVenduta;
     private int codiceProdotto;
     private String immagineUrl;
+    private String sessoProdotto;
 
     @Max(value = 100, message = "Lo sconto non può superare il 100")
     private Integer sconto;

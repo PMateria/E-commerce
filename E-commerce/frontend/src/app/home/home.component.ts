@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter, retry, catchError } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin, Subscription, EMPTY, firstValueFrom } from 'rxjs';
+import { forkJoin, Subscription, EMPTY, firstValueFrom, of } from 'rxjs';
 import { Category } from '../models/category.interface';
 import { Product } from '../models/product.interface';
 
@@ -23,6 +23,8 @@ interface CategoryGroup {
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
+  @ViewChild('sliderTrack') sliderTrack!: ElementRef;
+
   products: any[] = [];
   featuredProducts: any[] = [];
   productsByCategories: CategoryGroup[] = [];
@@ -33,6 +35,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   selectedProduct: any;
   quantity: number = 1;
   topSellingProducts: any[] = [];
+  private sliderInitialized = false;
+  private resizeObserver!: ResizeObserver;
   
 
 
@@ -47,9 +51,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     this.navigationSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      if (this.router.url === '/' || this.router.url === '/home') {
-        this.loadData();
+    ).subscribe((event: NavigationEnd) => {
+      console.log('Navigazione verso:', event.urlAfterRedirects);
+      if (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home') {
+        console.log('Forzo ricaricamento dati');
+        this.loadData(); // Ricarica i dati
       }
     });
   }
@@ -81,8 +87,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   resetQuantity() {
     this.quantity = 1;
   }
+  
+  ngAfterViewInit() {
+    this.initSlider();
+    this.setupResizeObserver();
+  }
 
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.loadDataSubscription?.unsubscribe();
     this.navigationSubscription?.unsubscribe();
   }
@@ -93,43 +105,73 @@ export class HomeComponent implements OnInit, OnDestroy {
     
 
     forkJoin({
-      products: this.productService.getProducts(),
-      featuredProducts: this.productService.getTopSellingProducts(5),
-      categories: this.productService.getCategories(),
-      topSellingProducts: this.productService.getTopSellingProducts(5)
+      products: this.productService.getProducts().pipe(
+        catchError(error => {
+          console.error('Error loading products:', error);
+          return of([]); // Restituisci array vuoto invece di bloccare
+        })
+      ),
+      // Aggiungi catchError a tutte le chiamate
+      featuredProducts: this.productService.getTopSellingProducts(5).pipe(
+        catchError(error => {
+          console.error('Error loading featured:', error);
+          return of([]);
+        })
+      ),
+      categories: this.productService.getCategories().pipe(
+        catchError(error => {
+          console.error('Error loading categories:', error);
+          return of([]);
+        })
+      ),
+      topSellingProducts: this.productService.getTopSellingProducts(5).pipe(
+        catchError(error => {
+          console.error('Error loading top selling:', error);
+          return of([]);
+        })
+      )
     }).subscribe({
       next: (data) => {
-        this.products = Array.isArray(data.products) ? data.products : [];
-        this.featuredProducts = data.featuredProducts;
-        this.topSellingProducts = data.topSellingProducts;
+        // Forza il cambio stato anche con dati parziali
+        this.products = data.products || [];
+        this.featuredProducts = data.featuredProducts || [];
+        this.topSellingProducts = data.topSellingProducts || [];
         
-        if (Array.isArray(data.categories)) {
-          const categoryPromises = data.categories.map(async category => {
-            try {
-              const productsInCategory = await firstValueFrom(
-                this.productService.getProductsByCategory(category.nome)
-              );
-              return {
-                category,
-                products: productsInCategory || []
-              };
-            } catch (error) {
-              console.error(`Error loading products for ${category.nome}:`, error);
-              return { category, products: [] };
-            }
-          });
-  
-          Promise.all(categoryPromises).then(results => {
-            this.productsByCategories = results;
-            this.isLoading = false;
-          });
-        }
+        this.isLoading = false; // <-- Assicurati che venga chiamato
+        setTimeout(() => {
+          this.sliderInitialized = false;
+          this.initSlider();
+        }, 0);
       },
       error: (error) => {
-        console.error('Error:', error);
-        this.error = 'Errore caricamento dati';
-        this.isLoading = false;
+        this.isLoading = false; // <-- Importante anche qui
+        this.error = 'Errore nel caricamento dati';
       }
     });
+  }
+
+  
+  private initSlider() {
+    if (this.topSellingProducts.length > 0 && !this.sliderInitialized) {
+      const sliderElement = this.sliderTrack.nativeElement;
+      const firstSlide = sliderElement.children[0];
+      
+      if (firstSlide) {
+        const slideWidth = firstSlide.offsetWidth;
+        sliderElement.style.width = `${slideWidth * this.topSellingProducts.length}px`;
+        this.sliderInitialized = true;
+      }
+    }
+  }
+
+  private setupResizeObserver() {
+    this.resizeObserver = new ResizeObserver(() => {
+      this.sliderInitialized = false;
+      this.initSlider();
+    });
+
+    if (this.sliderTrack?.nativeElement) {
+      this.resizeObserver.observe(this.sliderTrack.nativeElement);
+    }
   }
 }

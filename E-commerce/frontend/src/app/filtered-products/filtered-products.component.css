@@ -1,0 +1,57 @@
+.product-title {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #333; /* Grigio scuro */
+    margin-bottom: 0.5rem;
+    display: block;
+    white-space: normal; /* Assicurati che il testo vada a capo */
+  }
+  
+  .product-price {
+    font-size: 1rem;
+    color: #666; /* Grigio medio */
+    margin-bottom: 0;
+  }
+  
+  .card {
+    border: 1px solid #ddd; /* Grigio chiaro */
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+    margin-bottom: 1rem; /* Aggiungi margine inferiore */
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-img-top {
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .social-links a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .social-links a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }
+  
+  .header-top p {
+    font-size: 1rem;
+    color: #000; /* Colore del testo */
+  }
+  
+  .header-top ul li a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .header-top ul li a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }

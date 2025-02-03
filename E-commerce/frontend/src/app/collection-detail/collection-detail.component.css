@@ -71,3 +71,26 @@
     filter: none;
     pointer-events: auto;
   }
+
+  .social-links a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .social-links a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }
+  
+  .header-top p {
+    font-size: 1rem;
+    color: #000; /* Colore del testo */
+  }
+  
+  .header-top ul li a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .header-top ul li a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }

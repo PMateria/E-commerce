@@ -6,12 +6,14 @@ import lombok.Data;
 
 @Data
 public class ProdottoDTO {
+    private String nome;
     private String descrizione;
     private int prezzo;
     private int quantita;
     private int quantitaVenduta;
     private Long categoriaId;
     private String immagineUrl;
+    private String sessoProdotto;
 
 
     @Max(value = 100)
