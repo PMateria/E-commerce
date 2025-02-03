@@ -32,6 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private navigationSubscription?: Subscription;
   selectedProduct: any;
   quantity: number = 1;
+  topSellingProducts: any[] = [];
   
 
 
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   openQuickView(product: Product) {
     console.log('Selected product:', product); // Debug log
     this.selectedProduct = product;
@@ -93,11 +95,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     forkJoin({
       products: this.productService.getProducts(),
       featuredProducts: this.productService.getTopSellingProducts(5),
-      categories: this.productService.getCategories()
+      categories: this.productService.getCategories(),
+      topSellingProducts: this.productService.getTopSellingProducts(5)
     }).subscribe({
       next: (data) => {
         this.products = Array.isArray(data.products) ? data.products : [];
         this.featuredProducts = data.featuredProducts;
+        this.topSellingProducts = data.topSellingProducts;
         
         if (Array.isArray(data.categories)) {
           const categoryPromises = data.categories.map(async category => {

@@ -67,6 +67,7 @@ export class ProductService {
     );
   }
 
+
   getProductById(productId: number): Observable<ProductDetail> {
     const url = `${this.BASE_URL}/gestione_prodotti/getProdottoById/${productId}`;
     return this.http.get<ProductDetail>(url).pipe(
