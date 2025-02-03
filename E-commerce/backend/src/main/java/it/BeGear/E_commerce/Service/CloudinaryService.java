@@ -1,10 +1,9 @@
 package it.BeGear.E_commerce.Service;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -12,18 +11,13 @@ import java.util.Map;
 
 @Service
 public class CloudinaryService {
+
     private final Cloudinary cloudinary;
 
-    // Costruttore che carica la configurazione di Cloudinary
-    public CloudinaryService() {
-        // Carica il file .env
-        Dotenv dotenv = Dotenv.load();
-
-        // Prendi il valore della variabile di ambiente CLOUDINARY_URL
-        String cloudinaryUrl = dotenv.get("CLOUDINARY_URL");
-
-        // Inizializza Cloudinary con l'URL
-        this.cloudinary = new Cloudinary(cloudinaryUrl);
+    // Iniezione del bean Cloudinary configurato in CloudinaryConfig
+    @Autowired
+    public CloudinaryService(Cloudinary cloudinary) {
+        this.cloudinary = cloudinary;
     }
 
     public String uploadImage(MultipartFile file) throws IOException {

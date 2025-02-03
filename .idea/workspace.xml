@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e6eb80c9-d026-4342-93d0-255ab7d45eb6" name="Changes" comment="" />
+    <list default="true" id="e6eb80c9-d026-4342-93d0-255ab7d45eb6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Configuration/CloudinaryConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Configuration/CloudinaryConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/ProdottoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/ProdottoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/CloudinaryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/CloudinaryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/ProdottoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/ProdottoService.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,8 +26,20 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/Git/calcolatriceGIT" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "PMateria"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/PMateria/E-commerce.git",
+    "accountId": "3e8e84da-c27a-47ba-9bee-ac163354f3f2"
+  }
+}]]></component>
   <component name="MavenRunner">
     <option name="skipTests" value="true" />
   </component>
@@ -43,7 +61,9 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.ECommerceApplication.executor": "Run",
+    "git-widget-placeholder": "fix-backend-no-category",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/pesci/OneDrive/Documenti/BeGear/Hangar_stellare_sec/HangarStellare",
     "node.js.detected.package.eslint": "true",
