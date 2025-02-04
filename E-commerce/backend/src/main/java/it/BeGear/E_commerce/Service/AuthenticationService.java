@@ -1,10 +1,7 @@
 package it.BeGear.E_commerce.Service;
 
 import it.BeGear.E_commerce.Dto.ResponseDTO;
-import it.BeGear.E_commerce.Dto.UtenteDTO;
-import it.BeGear.E_commerce.Dto.UtenteDtoMapper;
 import it.BeGear.E_commerce.Entity.Utente;
-import it.BeGear.E_commerce.Exception.UtenteAssenteException;
 import it.BeGear.E_commerce.Repository.UtenteRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +31,7 @@ public class AuthenticationService {
         if (repository.existsByUsername(utenteRequest.getUsername())) {
             throw new RuntimeException("Username già in uso. Scegliere un username diverso.");
         }
+
         Utente utente = utenteRequest.builder()
                 .nome(utenteRequest.getNome())
                 .cognome(utenteRequest.getCognome())
@@ -46,17 +44,16 @@ public class AuthenticationService {
                 .saldoWallett(utenteRequest.getSaldoWallett())
                 .build();
         Utente savedUser = repository.save(utente);
-        String jwtToken = jwtService.generateToken(utente);
-        return new ResponseDTO(jwtToken, "200 - Registrazione riuscita");
 
+        String jwtToken = jwtService.generateToken(utente);
+        return new ResponseDTO("200", "Registrazione riuscita", null);
     }
 
+    // Metodo per l'autenticazione dell'utente
     public ResponseDTO authenticate(Utente utenteRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(utenteRequest.getUsername(), utenteRequest.getPassword()));
         Utente user = repository.findByUsername(utenteRequest.getUsername()).orElseThrow();
         String jwtToken = jwtService.generateToken(user);
-        return new ResponseDTO(jwtToken, "200 - Autenticazione riuscita");
+        return new ResponseDTO("200", "Autenticazione riuscita", jwtToken);
     }
-
-
 }

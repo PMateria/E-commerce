@@ -172,17 +172,25 @@ public class    ProdottoService {
     }
 
 
-    public List<ProdottoDTO> getProdottiFiltratiPerSaldo(Principal principal){
-        String username= principal.getName();
-        Utente utente= utenteRepo.findByUsername(username).orElseThrow(() -> new UtenteAssenteException("Utente con username" + username + "non trovato"));
-        double saldoWallett = utente.getSaldoWallett();
-        // Filtro i prodotti con prezzo minore o uguale al saldo del wallett
-        List<Prodotto> prodottiFiltrati= prodottoRepo.findProdottiByPrezzoMax(saldoWallett);
+    public List<ProdottoDTO> getProdottiFiltratiPerSaldo() {
+        // Recupera tutti i prodotti dal repository
+        List<Prodotto> prodotti = prodottoRepo.findAll();
 
-        List<ProdottoDTO> prodottiDTO= new ArrayList<>();
-        for(Prodotto prodotto : prodottiFiltrati){
+        // Ordina i prodotti per sconto (dal più alto al più basso)
+        List<Prodotto> prodottiOrdinati = prodotti.stream()
+                .sorted((p1, p2) -> {
+                    int scontoP1 = p1.getSconto() != null ? p1.getSconto() : 0;
+                    int scontoP2 = p2.getSconto() != null ? p2.getSconto() : 0;
+                    return Integer.compare(scontoP2, scontoP1); // Ordine decrescente
+                })
+                .toList();
+
+        // Converti i prodotti in DTO
+        List<ProdottoDTO> prodottiDTO = new ArrayList<>();
+        for (Prodotto prodotto : prodottiOrdinati) {
             prodottiDTO.add(ProdottoDtoMapper.prodottoToDTO(prodotto, new ProdottoDTO()));
         }
+
         return prodottiDTO;
     }
 

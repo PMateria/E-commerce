@@ -153,46 +153,20 @@
     </nav>
   </header>
 
-<div class="container">
-  <h2 class="my-4">{{ sessoProdotto }}'s Products</h2>
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-    <div class="col-md-4" *ngFor="let product of filteredProducts">
-      <div class="card h-100">
-        <img [src]="product.immagineUrl" class="card-img-top" [alt]="product.descrizione">
-        <div class="card-body">
-          <h4 class="card-title product-title">{{ product.nome }}</h4>
-          <p class="card-text">{{ product.descrizione }}</p>
-          <p class="card-text product-price">€{{ product.prezzo }}</p>
+  <div class="container">
+    <h2 class="my-4 ">Prodotti con Sconto Più Alto</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+      <div class="col mb-4" *ngFor="let prodotto of prodotti">
+        <div class="card h-100">
+          <img [src]="prodotto.immagineUrl" class="card-img-top" [alt]="prodotto.descrizione">
+          <div class="card-body">
+            <h4 class="card-title product-title">{{ prodotto.nome }}</h4>
+            <p class="card-text">{{ prodotto.descrizione }}</p>
+            <p class="card-text product-price">€{{ prodotto.prezzo }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>
-
-<!-- Modal -->
-<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="productModalLabel">{{ selectedProduct?.nome }}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <img [src]="selectedProduct?.immagineUrl" class="img-fluid" [alt]="selectedProduct?.descrizione">
-        <p>{{ selectedProduct?.descrizione }}</p>
-        <p>€{{ selectedProduct?.prezzo }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
-        <button type="button" class="btn btn-primary" (click)="selectedProduct && addToCart(selectedProduct)">
-          Aggiungi al Carrello
-        </button>
-        <button type="button" class="btn btn-success" (click)="selectedProduct && buyNow(selectedProduct)">
-          Acquista Ora
-        </button>
-      </div>
-    </div>
-  </div>
-</div>

@@ -6,6 +6,8 @@ import it.BeGear.E_commerce.Dto.UtenteDTO;
 import it.BeGear.E_commerce.Entity.Utente;
 import it.BeGear.E_commerce.Service.AuthenticationService;
 import it.BeGear.E_commerce.Service.UtenteService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,16 +42,28 @@ public class UtenteController {
         }
     }
 
+    // Nel tuo controller di login
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> authenticate(@RequestBody Utente utente) {
+    public ResponseEntity<ResponseDTO> authenticate(@RequestBody Utente utente, HttpServletResponse response) {
         try {
-            ResponseDTO response = authService.authenticate(utente);
-            return ResponseEntity.ok(response);
+            String jwt = authService.authenticate(utente).getToken();  // Ottieni il token dal ResponseDTO
+
+            // Impostare il cookie HttpOnly
+            Cookie cookie = new Cookie("JWT", jwt);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true); // se sei in produzione, assicurati di avere HTTPS
+            cookie.setPath("/"); // Il cookie sarà valido per tutto il dominio
+            cookie.setMaxAge(3600); // Scadenza del cookie (1 ora)
+
+            response.addCookie(cookie); // Aggiungi il cookie alla risposta
+
+            // Rispondi al frontend con il token
+            return ResponseEntity.ok(new ResponseDTO("200", "Autenticazione riuscita", jwt));  // Token incluso nella risposta
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ResponseDTO(null, "401 - Autenticazione fallita: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDTO("401", "Errore durante l'autenticazione", e.getMessage()));
         }
     }
+
 
 
     @GetMapping("/getUtente/{id}")

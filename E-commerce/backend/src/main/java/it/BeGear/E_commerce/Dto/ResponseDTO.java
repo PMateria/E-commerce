@@ -8,5 +8,10 @@ import lombok.Data;
 public class ResponseDTO {
     private String responseStatus;
     private String responseMessage;
+    private String token;
 
+    public ResponseDTO(String responseStatus, String responseMessage) {
+        this.responseStatus = responseStatus;
+        this.responseMessage = responseMessage;
+    }
 }

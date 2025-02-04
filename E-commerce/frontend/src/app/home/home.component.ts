@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter, retry, catchError } from 'rxjs/operators';
@@ -22,7 +22,7 @@ interface CategoryGroup {
   imports: [CommonModule, RouterModule, FormsModule]
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('sliderTrack') sliderTrack!: ElementRef;
 
   products: any[] = [];
@@ -153,25 +153,29 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   private initSlider() {
     if (this.topSellingProducts.length > 0 && !this.sliderInitialized) {
-      const sliderElement = this.sliderTrack.nativeElement;
-      const firstSlide = sliderElement.children[0];
-      
-      if (firstSlide) {
-        const slideWidth = firstSlide.offsetWidth;
-        sliderElement.style.width = `${slideWidth * this.topSellingProducts.length}px`;
-        this.sliderInitialized = true;
+      // Verifica che sliderTrack sia disponibile
+      if (this.sliderTrack && this.sliderTrack.nativeElement) {
+        const sliderElement = this.sliderTrack.nativeElement;
+        const firstSlide = sliderElement.children[0];
+
+        if (firstSlide) {
+          const slideWidth = firstSlide.offsetWidth;
+          sliderElement.style.width = `${slideWidth * this.topSellingProducts.length}px`;
+          this.sliderInitialized = true; // Imposta come inizializzato
+        }
       }
     }
   }
 
   private setupResizeObserver() {
+    // Crea un ResizeObserver per adattare lo slider in base alla dimensione del viewport
     this.resizeObserver = new ResizeObserver(() => {
-      this.sliderInitialized = false;
+      this.sliderInitialized = false;  // Ri-inizializza lo slider al ridimensionamento
       this.initSlider();
     });
 
     if (this.sliderTrack?.nativeElement) {
-      this.resizeObserver.observe(this.sliderTrack.nativeElement);
+      this.resizeObserver.observe(this.sliderTrack.nativeElement); // Inizia a osservare
     }
   }
 }

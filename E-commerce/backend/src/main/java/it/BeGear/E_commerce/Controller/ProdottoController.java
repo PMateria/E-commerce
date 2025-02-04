@@ -150,14 +150,15 @@
         }
 
         @GetMapping("/filtratiPerSaldo")
-        public ResponseEntity<List<ProdottoDTO>> getProdottiFiltratiPerSaldo(Principal principal) {
+        public ResponseEntity<List<ProdottoDTO>> getProdottiFiltratiPerSaldo() {
             try {
-                List<ProdottoDTO> prodottiFiltrati = prodottoService.getProdottiFiltratiPerSaldo(principal);
+                List<ProdottoDTO> prodottiFiltrati = prodottoService.getProdottiFiltratiPerSaldo();
                 return ResponseEntity.ok(prodottiFiltrati);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
+
 
         @GetMapping("/prodottiPiuVenduti/{fascia}")
         public ResponseEntity<Object> getProdottiPiuVenduti(
