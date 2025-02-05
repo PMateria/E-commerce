@@ -41,8 +41,6 @@ public class UtenteController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
-
-    // Nel tuo controller di login
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> authenticate(@RequestBody Utente utente, HttpServletResponse response) {
         try {
@@ -51,13 +49,12 @@ public class UtenteController {
             // Impostare il cookie HttpOnly
             Cookie cookie = new Cookie("JWT", jwt);
             cookie.setHttpOnly(true);
-            cookie.setSecure(true); // se sei in produzione, assicurati di avere HTTPS
+            cookie.setSecure(true);
             cookie.setPath("/"); // Il cookie sarà valido per tutto il dominio
             cookie.setMaxAge(3600); // Scadenza del cookie (1 ora)
 
-            response.addCookie(cookie); // Aggiungi il cookie alla risposta
+            response.addCookie(cookie);
 
-            // Rispondi al frontend con il token
             return ResponseEntity.ok(new ResponseDTO("200", "Autenticazione riuscita", jwt));  // Token incluso nella risposta
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDTO("401", "Errore durante l'autenticazione", e.getMessage()));

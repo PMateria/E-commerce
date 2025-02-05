@@ -169,3 +169,50 @@ body {
   height: auto;    /* Mantieni la proporzione dell'immagine */
   object-fit: contain; /* Assicurati che l'immagine si adatti senza distorsioni */
 }
+/* Custom validation states */
+.form-control:invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control:invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+/* Input group icons */
+.input-group-text {
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within .input-group-text {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Social button hover effect */
+.btn-outline-dark:hover {
+  background-color: transparent;
+  border-color: #000;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+/* Aggiungi questo al tuo file CSS */
+#modallogin .modal-content {
+  background: #fff !important; /* Forza sfondo bianco */
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+}
+
+#modallogin .modal-header {
+  background: #fff !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+#modallogin .modal-body {
+  background: #fff !important;
+  border-radius: 0 0 12px 12px !important;
+}
