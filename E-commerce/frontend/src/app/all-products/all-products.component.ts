@@ -1,3 +1,4 @@
+// all-products.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { Product } from '../models/product.interface';
@@ -6,24 +7,24 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-featured-products-list',
-  templateUrl: './featured-products-list.component.html',
-  styleUrls: ['./featured-products-list.component.css'],
-  imports: [CommonModule, RouterModule, FormsModule],
-  standalone: true
+  selector: 'app-all-products',
+  templateUrl: './all-products.component.html',
+  styleUrls: ['./all-products.component.css'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule]
 })
-export class FeaturedProductsListComponent implements OnInit {
-  featuredProducts: Product[] = [];
+export class AllProductsComponent implements OnInit {
+  products: Product[] = [];
   isLoading = true;
   selectedProduct: Product | null = null;
   quantity: number = 1;
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.getTopSellingProducts(100).subscribe({
+    this.productService.getProducts().subscribe({
       next: (products) => {
-        this.featuredProducts = products;
+        this.products = products;
         this.isLoading = false;
       },
       error: (error) => {
@@ -33,56 +34,57 @@ export class FeaturedProductsListComponent implements OnInit {
     });
   }
 
-  // Apre la quick view
+
+getSubtotal(): number {
+  if (!this.selectedProduct) return 0;
+  
+  const originalPrice = this.selectedProduct.prezzo;
+  const discount = this.selectedProduct.sconto || 0;
+  const discountedPrice = originalPrice * (1 - discount / 100);
+  
+  return discountedPrice * this.quantity;
+}
+  
+
   openQuickView(product: Product) {
     this.selectedProduct = product;
     this.quantity = 1; 
-  }
-
-  // Chiude la quick view
-  closeQuickView() {
-    this.selectedProduct = null;
-  }
-
-  // Incrementa la quantità
-  incrementQty() {
-    if (this.selectedProduct && this.quantity < (this.selectedProduct.quantita ?? 1)) {
-      this.quantity++;
-    }
-  }
-
-  // Decrementa la quantità
-  decrementQty() {
-    if (this.quantity > 1) {
-      this.quantity--;
-    }
-  }
-
-  // Azione per "Acquista"
-  buyNow(product: Product) {
-    alert(`Hai acquistato: ${product.nome} (Quantità: ${this.quantity})`);
-    this.closeQuickView();
   }
 
   openCartView(product: Product) {
     this.selectedProduct = product;
     this.quantity = 1;
   }
+  
 
- // Calcolo totale scontato
- getSubtotal(): number {
-  if (!this.selectedProduct) return 0;
-  const discount = this.selectedProduct.sconto / 100;
-  const subtotal = this.selectedProduct.prezzo * this.quantity * (1 - discount);
-  return Number(subtotal.toFixed(2)); // Converti a numero con 2 decimali
-}
-  // Azione per "Aggiungi al carrello"
+  closeQuickView() {
+    this.selectedProduct = null;
+  }
+
+  incrementQty() {
+    if (this.selectedProduct && this.quantity < (this.selectedProduct.quantita || 1)) {
+      this.quantity++;
+    }
+  }
+
+  decrementQty() {
+    console.log('Decrementing quantity', this.quantity);  // Debug log
+    if (this.quantity > 1) {
+      this.quantity--;
+      console.log('Updated quantity:', this.quantity);  // Debug log
+    }
+  }
+
+  buyNow(product: Product) {
+    alert(`Hai acquistato: ${product.nome} (Quantità: ${this.quantity})`);
+    this.closeQuickView();
+  }
+
   addToCart(product: Product) {
     alert(`Aggiunto al carrello: ${product.nome} (Quantità: ${this.quantity})`);
     this.closeQuickView();
   }
 
-  // Resetta la quantità
   resetQuantity() {
     this.quantity = 1;
   }

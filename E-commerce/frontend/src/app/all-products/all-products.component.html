@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
       <html lang="en">
       <head>
         <title>Stylish - Shoes Online Store HTML Template</title>
@@ -169,64 +169,66 @@
           </nav>
         </header>
 
-
-        <!-- featured-products-list.component.html -->
-        <section id="featured-products" class="product-store py-5">
-          <div class="container-md">
-            <div class="display-header d-flex align-items-center justify-content-between mb-4">
-              <h2 class="section-title text-uppercase">All Featured Products</h2>
-            </div>
-        
-            <div class="product-content padding-small">
-              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                <div class="col mb-4" *ngFor="let product of featuredProducts">
-                  <div class="product-card position-relative">
-                    <div class="card-img">
-                      <div class="image-container">
-                        <img [src]="product.immagineUrl || 'assets/images/default-image.jpg'" 
-                            [alt]="product.descrizione" 
-                            class="product-image img-fluid">
-                      </div>
-                      <div class="cart-concern position-absolute d-flex justify-content-center">
-                        <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
-                          <button type="button" 
-                          class="btn btn-light" 
-                          (click)="openCartView(product)" 
-                          data-bs-toggle="modal" 
-                          data-bs-target="#modallong">
-                    <svg class="shopping-carriage">
-                      <use xlink:href="#shopping-carriage"></use>
-                    </svg>
-                  </button> 
-                  <!-- Search button -->
-                  <button type="button" 
-                          class="btn btn-light" 
-                          (click)="openQuickView(product)" 
-                          data-bs-toggle="modal" 
-                          data-bs-target="#modaltoggle">
-                    <svg class="search">
-                      <use xlink:href="#search"></use>
-                    </svg>
-                  </button>
-                        </div>
-                      </div>
+  <section id="all-products" class="product-store py-5">
+    <div class="container-md">
+      <div class="display-header d-flex align-items-center justify-content-between mb-4">
+        <h2 class="section-title text-uppercase">All Products</h2>
+      </div>
+      
+      <div class="product-content padding-small">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+          <div class="col mb-4" *ngFor="let product of products">
+            <div class="product-card position-relative">
+              <div class="card-img">
+                <img [src]="product.immagineUrl || 'assets/images/default-image.jpg'" 
+                     [alt]="product.descrizione" 
+                     class="product-image img-fluid">
+                     <div class="cart-concern position-absolute d-flex justify-content-center">
+                      <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
+                        <!-- Bag button -->
+                        <button type="button" 
+                                class="btn btn-light" 
+                                (click)="openCartView(product)" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modallong">
+                          <svg class="shopping-carriage">
+                            <use xlink:href="#shopping-carriage"></use>
+                          </svg>
+                        </button> 
+                        <!-- Search button -->
+                        <button type="button" 
+                                class="btn btn-light" 
+                                (click)="openQuickView(product)" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modaltoggle">
+                          <svg class="search">
+                            <use xlink:href="#search"></use>
+                          </svg>
+                        </button>
+                      </div>                      
                     </div>
-                    <div class="card-detail d-flex justify-content-between align-items-center mt-3">
-                      <h4 class="card-title fs-6 fw-normal m-0">
-                        {{ product.nome }}
-                      </h4>
-                      <span class="card-price fw-bold">€{{ product.prezzo }}</span>
-                    </div>
-                  </div>
-                </div>
+                    
+              </div>
+              <div class="card-detail d-flex justify-content-between align-items-center mt-3">
+                <h3 class="card-title fs-6 fw-normal m-0">
+                  {{product.nome}}
+                </h3>
+                <span class="card-price fw-bold">€{{product.prezzo}}</span>
               </div>
             </div>
           </div>
-        </section>
-        
-        
-        <!-- Quick view modal -->
-    <div class="modal fade" id="modaltoggle" tabindex="-1" (hidden.bs.modal)="resetQuantity()"
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+    <!-- Quick view modal -->
+     <div class="modal fade" id="modaltoggle" tabindex="-1" (hidden.bs.modal)="resetQuantity()"
     (keydown.escape)="resetQuantity()">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -261,46 +263,66 @@
                       <strong>Quantita: {{selectedProduct?.quantita}}</strong>
                     </li>
                     <li>
-                      <strong>€{{selectedProduct?.prezzo}}</strong> 
+                      <strong>Prezzo unitario: €{{selectedProduct?.prezzo}}</strong> 
                     </li>
+                    <li>
+                    <strong>Totale: <bdi>
+                      €{{ ((selectedProduct?.prezzo ?? 0) * quantity) | number:'1.2-2' }}
+                    </bdi>
+                    
+                  </strong>
+                  <li>
+                  <strong>Totale Scontato: <bdi>
+                    €{{ getSubtotal() | number:'1.2-2' }}
+                  </bdi>
+                  </strong>
+                </li>
+                    
                   </ul>
                   <div class="variations-form shopify-cart">
+                    <div class="row">
+                      <div class="col-md-6">
                         <!-- Update quantity controls in modal -->
                         <div class="quantity d-flex pb-4">
-                          <div class="qty-number qty-number-minus">
+                          <div class="qty-number qty- number-minus d-flex justify-content-center align-items-center text-center">
                             <button type="button" 
                                     (click)="decrementQty()" 
                                     class="btn btn-light rounded-0 rounded-start btn-number"
                                     [disabled]="quantity <= 1">
                               <svg class="minus">
                                 <use xlink:href="#minus"></use>
-                              </svg> -
+                              </svg>
+                              -
                             </button>
                           </div>
-                        
+                          
                           <input type="number" 
-                                 [(ngModel)]="quantity" 
-                                 class="input-text text-center" 
-                                 min="1" 
-                                 [max]="selectedProduct?.quantita || 1"
-                                 name="quantity">
-                        
-                          <div class="qty-number qty-number-plus">
+                                [(ngModel)]="quantity" 
+                                class="input-text text-center" 
+                                min="1" 
+                                [max]="selectedProduct?.quantita || 1"
+                                name="quantity">
+                          
+                          <div class="qty-number qty-number-plus d-flex justify-content-center align-items-center text-center">
                             <button type="button" 
                                     (click)="incrementQty()"
                                     class="btn btn-light rounded-0 rounded-end btn-number"
                                     [disabled]="selectedProduct && quantity >= selectedProduct.quantita">
-                              +
                               <svg class="plus">
-                                <use xlink:href="#plus"></use>
+                               <use xlink:href="#plus"></use>
                               </svg>
+                              +
                             </button>
                           </div>
                         </div>
+
+                        
+                      </div>
                       <div class="col-md-6">
                         <a rel="nofollow" data-no-instant="" href="#" class="out-stock button">Out of stock</a>
                         <button type="submit" class="btn btn-medium btn-black hvr-sweep-to-right">Add to cart</button>
                       </div>
+                    </div>
                   </div>
                   
                 </div>
@@ -310,9 +332,8 @@
         </div>
       </div>
     </div>
-    
+    <!-- / quick view -->
 
-    <!-- Cart view modal -->
     <div class="modal fade" id="modallong" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
         <div class="modal-content">
@@ -323,19 +344,18 @@
           <div class="modal-body">
             <div class="shopping-cart">
               <div class="shopping-cart-content">
-                <div class="mini-cart cart-list p-0 mt-3">
-                  <div class="mini-cart-item d-flex border-bottom pb-3">
-                    <div class="col-lg-9 col-md-8 col-sm-8">
-                      <div class="product-header d-flex justify-content-between align-items-center mb-3">
-                        <div class="image-holder">
-                          <img [src]="selectedProduct?.immagineUrl || 'assets/images/summary-item1.jpg'" 
-                          [alt]="selectedProduct?.descrizione" 
-                          class="product-image">
-                        </div>
-                      </div>
-                      <div class="product-details" style="margin-left: 10px;">
-                        <h4 class="product-title fs-16 me-5">{{selectedProduct?.nome}}</h4>
-                          <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
+                <div class="mini-cart cart-list p-0 mt-3">  <div class="mini-cart-item d-flex border-bottom pb-3">
+                  <div class="col-lg-2 col-md-3 col-sm-2 me-4">
+                    <div class="image-holder">
+                      <img [src]="selectedProduct?.immagineUrl || 'assets/images/summary-item1.jpg'" 
+                          [alt]="selectedProduct?.descrizione">
+                          
+                    </div>
+                  </div>
+                  <div class="col-lg-9 col-md-8 col-sm-8">
+                    <div class="product-header d-flex justify-content-between align-items-center mb-3">
+                      <h4 class="product-title fs-6 me-5">{{selectedProduct?.nome}}</h4>            
+                        <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
                           data-cart_item_key="abc" data-product_sku="">
                           <svg class="close">
                             <use xlink:href="#close"></use>
@@ -343,59 +363,102 @@
                         </a>
                       </div>
                       <div class="quantity-price d-flex justify-content-between align-items-center">
-                        <div class="quantity d-flex pb-4">
-                          <div class="qty-number qty-number-minus">
-                            <button type="button" 
-                                    (click)="decrementQty()" 
-                                    class="btn btn-light rounded-0 rounded-start btn-number"
-                                    [disabled]="quantity <= 1">
-                              <svg class="minus">
-                                <use xlink:href="#minus"></use>
-                              </svg> -
-                            </button>
-                          </div>
-                        
-                          <input type="number" 
-                                 [(ngModel)]="quantity" 
-                                 class="input-text text-center" 
-                                 min="1" 
-                                 [max]="selectedProduct?.quantita || 1"
-                                 name="quantity">
-                        
-                          <div class="qty-number qty-number-plus">
-                            <button type="button" 
-                                    (click)="incrementQty()"
-                                    class="btn btn-light rounded-0 rounded-end btn-number"
-                                    [disabled]="selectedProduct && quantity >= selectedProduct.quantita">
-                              +
-                              <svg class="plus">
-                                <use xlink:href="#plus"></use>
+                        <div class="input-group product-qty d-flex align-items-center gap-1"> <!-- Aggiunto gap-1 -->
+                          <button type="button" 
+                                  class="btn btn-light rounded-0 rounded-start btn-number p-1"
+                                  (click)="decrementQty()"
+                                  [disabled]="quantity <= 1"> -
+                              <svg width="10" height="10" class="m-0 p-0">
+                                  <use xlink:href="#minus"></use>
                               </svg>
-                            </button>
-                          </div>
+                          </button>
+                          
+                          <input type="text" 
+                                 name="quantity" 
+                                 class="form-control input-number text-center border-start-0 border-end-0 px-0" 
+                                 [(ngModel)]="quantity"
+                                 style="width: 16px">
+                          
+                          <button type="button" 
+                                  class="btn btn-light rounded-0 rounded-end btn-number p-1"
+                                  (click)="incrementQty()"
+                                  [disabled]="selectedProduct && quantity >= selectedProduct.quantita"> +
+                              <svg width="16" height="16" class="m-0 p-0">
+                                  <use xlink:href="#plus"></use>
+                              </svg>
+                          </button>
+                      </div>
+                        <div class="price-code">
+                          <span class="product-price fs-6">€{{selectedProduct?.prezzo}}</span>
                         </div>
                       </div>
+                      <!-- quantity-price -->
                     </div>
                   </div>
                 </div>
-                <div class="mini-cart-total d-flex justify-content-between py-4">
-                  <bdi>
-                    <span class="price-currency-symbol"></span>Quantita: {{ selectedProduct?.quantita  }} </bdi>
-  
-                <bdi>
-                  <span class="price-currency-symbol"></span>Totale: €{{ getSubtotal() }}  </bdi>
+                <div class="mini-cart cart-list p-0 mt-3">
+                  <div class="mini-cart-item d-flex border-bottom pb-3">
 
-                  <span class="special-price-code">
-                    <span class="price-amount amount fs-6" style="opacity: 1;">
-                      <bdi>
-                        <span class="price-currency-symbol"></span>Prezzo Unitario: €{{selectedProduct?.prezzo}}  </bdi>
-                    </span>
-                  </span>
+                  
+                  </div>
                 </div>
+                <!-- cart-list -->
+                <div class="mini-cart-total d-flex justify-content-between py-4">
+                  <span class="fs-6">Totale:</span>
+                  <span class="special-price-code">
+                      <span class="price-amount amount fs-6" style="opacity: 1;">
+                          <bdi>
+                              <span *ngIf="selectedProduct?.sconto" class="text-decoration-line-through text-muted small me-2">
+                                €{{ ((selectedProduct?.prezzo ?? 0) * quantity) | number:'1.2-2' }}
+                              </span>
+                              Totale Scontato:   €{{ getSubtotal() | number:'1.2-2' }}
+                          </bdi>
+                      </span>
+                  </span>
+              </div>
                 <div class="modal-footer my-4 justify-content-center">
                   <button type="button" class="btn btn-red hvr-sweep-to-right dark-sweep">View Cart</button>
-                  <button type="button" class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Checkout</button>
+                  <button type="button"
+                    class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Checkout</button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- cart view -->
+
+    <div class="modal fade" id="modallogin" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered" role="document">
+        <div class="modal-content p-4">
+          <div class="modal-header mx-auto border-0">
+            <h2 class="modal-title fs-3 fw-normal">Login</h2>
+          </div>
+          <div class="modal-body">
+            <div class="login-detail">
+              <div class="login-form p-0">
+                <div class="col-lg-12 mx-auto">
+                  <form id="login-form">
+                    <input type="email" id="email" name="email" autocomplete="email">
+                    class="mb-3 ps-3 text-input">
+                    <input type="password" name="password" placeholder="Password" class="ps-3 text-input">
+                    <div class="checkbox d-flex justify-content-between mt-4">
+                      <p class="checkbox-form">
+                        <label class="">
+                          <input name="rememberme" type="checkbox" id="remember-me" value="forever"> Remember me </label>
+                      </p>
+                      <p class="lost-password">
+                        <a href="#">Forgot your password?</a>
+                      </p>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer mt-5 d-flex justify-content-center">
+                <button type="button" class="btn btn-red hvr-sweep-to-right dark-sweep">Login</button>
+                <button type="button"
+                  class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Register</button>
               </div>
             </div>
           </div>

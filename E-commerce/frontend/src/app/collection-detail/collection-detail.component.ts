@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../service/product.service';
 import { CommonModule } from '@angular/common';
-import { tap, map, filter, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { ProductDetail } from '../models/ProductDetail.interface';
 
 @Component({

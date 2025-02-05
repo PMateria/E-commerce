@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       products: this.productService.getProducts().pipe(
         catchError(error => {
           console.error('Error loading products:', error);
-          return of([]); // Restituisci array vuoto invece di bloccare
+          return of([]); 
         })
       ),
       // Aggiungi catchError a tutte le chiamate
@@ -132,19 +132,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       )
     }).subscribe({
       next: (data) => {
-        // Forza il cambio stato anche con dati parziali
-        this.products = data.products || [];
+        this.products = (data.products || []).slice(0, 5);
         this.featuredProducts = data.featuredProducts || [];
         this.topSellingProducts = data.topSellingProducts || [];
         
-        this.isLoading = false; // <-- Assicurati che venga chiamato
+        this.isLoading = false; 
         setTimeout(() => {
           this.sliderInitialized = false;
           this.initSlider();
         }, 0);
       },
-      error: (error) => {
-        this.isLoading = false; // <-- Importante anche qui
+      error: () => {
+        this.isLoading = false; 
         this.error = 'Errore nel caricamento dati';
       }
     });

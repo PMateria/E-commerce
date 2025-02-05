@@ -162,3 +162,10 @@ body {
   height: auto;
   display: block;
 }
+
+/* Impostazioni per l'immagine del prodotto nel modal */
+#modaltoggle .image-holder img {
+  max-width: 100%; /* La larghezza massima dell'immagine sarà quella del contenitore */
+  height: auto;    /* Mantieni la proporzione dell'immagine */
+  object-fit: contain; /* Assicurati che l'immagine si adatti senza distorsioni */
+}

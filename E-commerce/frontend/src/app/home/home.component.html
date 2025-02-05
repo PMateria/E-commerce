@@ -549,7 +549,7 @@
       <div class="container-lg">
         <div class="swiper main-swiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide" *ngFor="let product of topSellingProducts; let i = index" [ngClass]="{'offset-image': i % 2 !== 0}">
+            <div class="swiper-slide" *ngFor="let product of topSellingProducts.slice(0,5); let i = index" [ngClass]="{'offset-image': i % 2 !== 0}">
               <div class="card d-flex flex-row align-items-end border-0 large jarallax-keep-img">
                 <img [src]="product.immagineUrl || 'assets/images/default-image.jpg'" alt="{{product.descrizione}}" class="img-fluid jarallax-img">
                 <div class="cart-concern p-3 m-3 p-lg-5 m-lg-5">
@@ -590,13 +590,12 @@
       <div class="container-md">
         <div class="row">
           <div class="col-lg-6 col-md-6" *ngFor="let categoryGroup of productsByCategories">
-            <!-- Mantieni la struttura del card ma usa *ngFor per iterare sulle categorie -->
-            <div class="collection-card card border-0 d-flex flex-row align-items-center">
-              <div class="image-container d-flex justify-content-center align-items-center" style="width: 400px;">
+            <div class="collection-card card border-0 d-flex flex-row ">
+              <div class="image-container d-flex justify-content-center " style="width: 400px;">
                 <img src="../../assets/images/collection-item1.jpg" 
                     alt="{{categoryGroup.category.nome}}" 
                     class="border-rounded-10 img-fluid" 
-                    style="max-width: 400px; height: 300px; object-fit: cover;">
+                    style="max-width: 200px; height: 100px; object-fit: cover;">
               </div>
               <div class="card-detail p-4 m-4 p-lg-5 m-lg-5">
                 <h3 class="card-title display-3">
@@ -630,7 +629,7 @@
         <div class="product-content padding-small">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
 
-      <div class="col mb-4" *ngFor="let product of featuredProducts">
+      <div class="col mb-4" *ngFor="let product of featuredProducts.slice(0,5)">
     <div class="product-card position-relative">
       <div class="card-img">
         <img [src]="product.immagineUrl || 'assets/images/card-item1.jpg'" 
@@ -668,14 +667,14 @@
         <div class="display-header d-flex align-items-center justify-content-between">
           <h2 class="section-title text-uppercase">All Products</h2>
           <div class="btn-right">
-            <a href="../../index.html" class="d-inline-block text-uppercase text-hover fw-bold">View all</a>
+            <a [routerLink]="['/all-products']" class="d-inline-block text-uppercase text-hover fw-bold">View all</a>
           </div>
         </div>
         <div class="product-content padding-small">
           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5">
 
 
-            <div class="col mb-4" *ngFor="let product of products">
+            <div class="col mb-4" *ngFor="let product of products.slice(0,5)" >
               <div class="product-card position-relative">
                 <div class="card-img">
                   <img [src]="product.immagineUrl || 'assets/images/card-item1.jpg'" 
