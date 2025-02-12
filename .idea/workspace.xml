@@ -6,16 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="e6eb80c9-d026-4342-93d0-255ab7d45eb6" name="Changes" comment="CloudinaryConfig Fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Configuration/SpringSecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Configuration/SpringSecurityConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Controller/UtenteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Controller/UtenteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/ng" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Service/UtenteService.java" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/backend/src/main/java/it/BeGear/E_commerce/Service/UtenteService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/filtered-products/filtered-products.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/filtered-products/filtered-products.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/filtered-products/filtered-products.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/filtered-products/filtered-products.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/home/home.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/prodotti-sconto-piu-alto/prodotti-sconto-piu-alto.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/prodotti-sconto-piu-alto/prodotti-sconto-piu-alto.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/auth-interceptor.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/auth-interceptor.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/auth.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/product.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/frontend/src/app/service/product.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Configuration/SpringSecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Configuration/SpringSecurityConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/CarrelloController.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/CarrelloController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/ProdottoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/ProdottoController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/UtenteController.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Controller/UtenteController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Dto/ResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Dto/ResponseDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/AuthenticationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/AuthenticationService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/ProdottoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/ProdottoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/UtenteService.class" beforeDir="false" afterPath="$PROJECT_DIR$/E-commerce/target/classes/it/BeGear/E_commerce/Service/UtenteService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,31 +68,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ECommerceApplication.executor": "Run",
-    "Maven.E-commerce [clean].executor": "Run",
-    "Maven.E-commerce [install].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.ECommerceApplication.executor": "Run",
-    "git-widget-placeholder": "fix-backend-no-category",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/pesci/OneDrive/Documenti/BeGear/Hangar_stellare_sec/HangarStellare",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ECommerceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.E-commerce [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.E-commerce [install].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ECommerceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix-backend-no-category&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/pesci/OneDrive/Documenti/BeGear/Hangar_stellare_sec/HangarStellare&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\pesci\OneDrive\Documenti\BeGear\demo\demo\target\classes\it\BeGear\E-commerce\E-commerce" />

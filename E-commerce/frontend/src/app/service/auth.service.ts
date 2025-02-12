@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 interface LoginResponse {
   responseStatus: string;
   responseMessage: string;
   token: string;
+  username: string;
+}
+
+interface RegisterResponse {
+  responseStatus: string;
+  responseMessage: string;
 }
 
 @Injectable({
@@ -16,41 +22,91 @@ interface LoginResponse {
 export class AuthService {
   private readonly BASE_URL = 'http://localhost:8080';
   private readonly LOGIN_ENDPOINT = `${this.BASE_URL}/gestione_utenti/login`;
+  
+  private isAuthenticatedSubject = new BehaviorSubject(this.hasValidToken());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private username: string = '';
 
-  // Token in memoria
-  private jwtToken: string | null = null;
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkAuthStatus();
+  }
 
-
-  constructor(private http: HttpClient, private router: Router) {}
-
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<LoginResponse>(this.LOGIN_ENDPOINT, { username, password }).pipe(
-      map((response) => {
-        // Memorizziamo il token in memoria
-        this.jwtToken = response.token;
-        return response;
+  login(username: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      this.LOGIN_ENDPOINT, 
+      { username, password }, 
+      { withCredentials: true }
+    ).pipe(
+      tap(response => {
+        if (response.responseStatus === '200') {
+          // Aggiorna il nome utente e lo stato di autenticazione
+          this.username = response.username;
+          this.isAuthenticatedSubject.next(true);
+          // Memorizza il JWT nel cookie
+          document.cookie = `JWT=${response.token}; Secure; HttpOnly; SameSite=Strict`;
+        }
       }),
       catchError(error => {
-        // Gestiamo eventuali errori
         console.error('Login error', error);
-        throw error;
+        return throwError(error);
       })
     );
   }
 
-  logout() {
-    // Svuotiamo il token in memoria
-    this.jwtToken = null;
-    // Possiamo reindirizzare a una pagina di login o home
-    this.router.navigate(['/login']);
+  register(userData: any): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(
+      `${this.BASE_URL}/gestione_utenti/aggiungiUtente`,
+      userData
+    ).pipe(
+      catchError(error => {
+        let errorMessage = 'Errore durante la registrazione';
+        if (error.error?.responseMessage) {
+          errorMessage = error.error.responseMessage;
+        }
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
-  getToken(): string | null {
-    return this.jwtToken;
+  
+  private authStatusChanged = new Subject<boolean>();
+  authStatusChanged$ = this.authStatusChanged.asObservable();
+
+  logout(): void {
+    // Puoi aggiungere una chiamata API per invalidare il token lato server
+    this.isAuthenticatedSubject.next(false);
+    this.username = '';
+    // Rimuovi il token dal cookie
+    document.cookie = 'JWT=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    this.router.navigate(['/login']); // Reindirizza alla pagina di login
   }
 
-  isAuthenticated(): boolean {
-    // Verifica che il token esista in memoria
-    return this.jwtToken !== null;
+    private hasValidToken(): boolean {
+    // Verifica se il token JWT è presente nel cookie
+    const token = this.getCookie('JWT');
+    return !!token;
+  }
+
+  private checkAuthStatus(): void {
+    const isAuthenticated = this.hasValidToken();
+    this.isAuthenticatedSubject.next(isAuthenticated);
+  }
+
+  // Metodo di supporto per ottenere lo stato attuale dell'autenticazione
+  getAuthStatus(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  private getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+  }
+  
+
+  // Metodo pubblico per ottenere il valore di username
+  getUsername(): string {
+    return this.username;
   }
 }

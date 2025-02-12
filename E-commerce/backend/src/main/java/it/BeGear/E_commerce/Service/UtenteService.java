@@ -32,24 +32,6 @@ public class UtenteService {
     private PasswordEncoder passwordEncoder;
 
 
-    public UtenteDTO registraUtente(UtenteDTO utenteDTO) {
-        if (utenteRepository.existsByEmail(utenteDTO.getEmail())) {
-            throw new UtenteDoppioException("Email già registrata");
-        }
-        Utente utente = new Utente();
-
-        UtenteDtoMapper.DTOToUtente(utenteDTO, utente);
-        Utente savedUtente = utenteRepository.save(utente);
-        return UtenteDtoMapper.utenteDto(savedUtente, new UtenteDTO());
-    }
-
-    public boolean authenticateUser(String username, String rawPassword) {
-        // Trova l'utente usando l'username
-        return utenteRepository.findByUsername(username)
-                .map(utente -> passwordEncoder.matches(rawPassword, utente.getPassword()))
-                .orElse(false);
-    }
-
     // Get dell'utente in base all'id
     public UtenteDTO getUtenteById(int id) {
         Utente utente = utenteRepository.findById(id).orElseThrow(() ->

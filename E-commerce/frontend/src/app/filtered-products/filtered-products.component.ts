@@ -78,4 +78,15 @@ export class FilteredProductsComponent implements OnInit {
       }
     }
   }
+
+    getTranslatedSessoProdotto(): string {
+    if (this.sessoProdotto.toLowerCase() === 'donna') {
+      return 'Woman';
+    }
+
+    if (this.sessoProdotto.toLowerCase() === 'uomo') {
+      return 'Men';
+    }
+    return this.sessoProdotto;
+  }
 }

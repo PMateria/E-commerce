@@ -79,11 +79,8 @@ export class ProductService {
     );
   }
 
-  getProdottiConScontoPiuAlto(): Observable<Product[]> {
-    const token = this.authService.getToken();
-    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
-  
-    return this.http.get<Product[]>(this.ENDPOINTS.getProdottiConScontoPiuAlto, { headers }).pipe(
+  getProdottiConScontoPiuAlto(): Observable<Product[]> {  
+    return this.http.get<Product[]>(this.ENDPOINTS.getProdottiConScontoPiuAlto).pipe(
       catchError(error => {
         console.error('Errore nel recupero dei prodotti in saldo:', error);
         return of([]); // Gestisci l'errore e ritorna un array vuoto
