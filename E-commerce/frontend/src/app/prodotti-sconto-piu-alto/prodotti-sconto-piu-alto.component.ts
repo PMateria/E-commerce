@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { Product } from '../models/product.interface';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../service/auth.service'; 
+import { Subscription } from 'rxjs';
+
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -13,16 +16,31 @@ import { HttpErrorResponse } from '@angular/common/http';
   standalone: true
 })
 
-export class ProdottiScontoPiuAltoComponent implements OnInit {
+export class ProdottiScontoPiuAltoComponent implements OnInit, OnDestroy {
   prodotti: Product[] = [];
   error: string = '';
   loading: boolean = true;
   sessoProdotto: string = ''; 
-  constructor(private productService: ProductService) {}
+  isAuthenticated = false;
+  private authSubscription!: Subscription;
+
+  constructor(private productService: ProductService,public authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(
+      (isAuth: boolean) => this.isAuthenticated = isAuth
+    );
     this.loadProdotti();
   }
+
+  ngOnDestroy(): void {
+    this.authSubscription?.unsubscribe();
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
+
 
   private loadProdotti(): void {
     this.loading = true;

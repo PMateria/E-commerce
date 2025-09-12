@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <title>Stylish - Shoes Online Store HTML Template</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,7 +23,9 @@
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-    <symbol xmlns="http://www.w3.org/2000/svg" id="shopping-carriage" viewBox="0 0 24 24" fill="none">
+    <symbol id="user" viewBox="0 0 24 24" fill="none">
+      <!-- Definizione dell'icona dell'utente -->
+      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
     </symbol>
   </svg>
 
@@ -74,8 +77,20 @@
               <li>
                 <a href="#">Cart</a>
               </li>
-              <li>
-                <a href="#">Login</a>
+              <li *ngIf="!(authService.isAuthenticated$ | async)">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modallogin">Login</a>
+              </li>
+              <li *ngIf="authService.isAuthenticated$ | async" class="dropdown">
+                <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ authService.getUsername() }}
+                     <svg class="user-icon" width="20" height="20">
+                      <use xlink:href="#user"></use>
+                    </svg>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+                </ul>
               </li>
             </ul>
           </div>

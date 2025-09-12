@@ -1,46 +1,90 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../service/auth.service';
-import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+interface LoginResponse {
+  responseStatus: string;
+  responseMessage: string;
+  token: string;
+  username: string;
+}
+
+interface RegisterResponse {
+  responseStatus: string;
+  responseMessage: string;
+}
+
+@Injectable({
+  providedIn: 'root'
 })
-export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
-  successMessage: string = '';
-  isLoading: boolean = false;
+export class AuthService {
+  private readonly BASE_URL = 'http://localhost:8080';
+  private readonly LOGIN_ENDPOINT = `${this.BASE_URL}/gestione_utenti/login`;
+  
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private username: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.checkAuthStatus();
+  }
 
-  onSubmit() {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    this.authService.login(this.username, this.password).subscribe({
-      next: (response) => {
+  login(username: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(
+      this.LOGIN_ENDPOINT, 
+      { username, password }, 
+      { withCredentials: true }
+    ).pipe(
+      tap(response => {
         if (response.responseStatus === '200') {
-          this.successMessage = 'Login effettuato con successo!';
-          setTimeout(() => {
-            // Aggiorna lo stato di autenticazione e il nome dell'utente
-            (this.authService.isAuthenticated$ as BehaviorSubject<boolean>).next(true);
-            this.successMessage = '';
-
-            // Reindirizza alla home
-            this.router.navigate(['/home']);
-          }, 1500);
+          // Aggiorna il nome utente e lo stato di autenticazione
+          this.username = response.username;
+          this.isAuthenticatedSubject.next(true);
+          // Memorizza il JWT nel cookie
+          document.cookie = `JWT=${response.token}; Secure; HttpOnly; SameSite=Strict`;
         }
-      },
-      error: (error) => {
-        this.errorMessage = 'Errore durante il login, per favore riprova';
-        this.isLoading = false;
-      }
-    });
+      }),
+      catchError(error => {
+        console.error('Login error', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  logout(): void {
+    // Puoi aggiungere una chiamata API per invalidare il token lato server
+    this.isAuthenticatedSubject.next(false);
+    this.username = '';
+    // Rimuovi il token dal cookie
+    document.cookie = 'JWT=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    this.router.navigate(['/login']); // Reindirizza alla pagina di login
+  }
+
+  private hasValidToken(): boolean {
+    // Verifica se il token JWT è presente nel cookie
+    const token = this.getCookie('JWT');
+    return !!token;
+  }
+
+  private checkAuthStatus(): void {
+    const isAuthenticated = this.hasValidToken();
+    this.isAuthenticatedSubject.next(isAuthenticated);
+  }
+
+  private getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+  }
+
+  getAuthStatus(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  getUsername(): string {
+    return this.username;
   }
 }

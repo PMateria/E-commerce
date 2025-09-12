@@ -74,9 +74,17 @@
               <li>
                 <a href="#">Cart</a>
               </li>
-              <li>
-                <a href="#">Login</a>
+              <li *ngIf="!(authService.isAuthenticated$ | async)">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modallogin">Login</a>
               </li>
+              <li *ngIf="authService.isAuthenticated$ | async" class="dropdown">
+                <a href="#" class="dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ authService.getUsername() }}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                  <li><a class="dropdown-item" href="#">Profile</a></li>
+                  <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+                </ul>
             </ul>
           </div>
         </div>

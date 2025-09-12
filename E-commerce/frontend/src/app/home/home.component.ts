@@ -62,9 +62,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  private authSubscription?: Subscription;
+
+
   ngOnInit(): void {
     this.isAuthenticated = this.authService.getAuthStatus();
     this.username = this.authService.getUsername();
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+      this.username = this.authService.getUsername();
+    });
     this.loadData();
 
     this.navigationSubscription = this.router.events.pipe(
@@ -113,6 +120,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resizeObserver?.disconnect();
     this.loadDataSubscription?.unsubscribe();
     this.navigationSubscription?.unsubscribe();
+    this.authSubscription?.unsubscribe();
+
   }
 
   loadData(): void {

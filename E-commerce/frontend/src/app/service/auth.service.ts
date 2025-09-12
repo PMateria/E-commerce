@@ -20,6 +20,9 @@ interface RegisterResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  syncAuthState() {
+    this.checkAuthStatus();
+  }
   private readonly BASE_URL = 'http://localhost:8080';
   private readonly LOGIN_ENDPOINT = `${this.BASE_URL}/gestione_utenti/login`;
   
@@ -78,7 +81,9 @@ export class AuthService {
     this.username = '';
     // Rimuovi il token dal cookie
     document.cookie = 'JWT=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    this.router.navigate(['/login']); // Reindirizza alla pagina di login
+    this.router.navigate(['/login']).then(() => {
+      window.location.reload(); // Ricarica per pulire lo stato
+    });
   }
 
     private hasValidToken(): boolean {
