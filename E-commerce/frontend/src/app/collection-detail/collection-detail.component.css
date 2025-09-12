@@ -1,0 +1,96 @@
+.product-card {
+  position: relative;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+.product-store {
+  position: relative;
+}
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+
+  .zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 900;
+    cursor: pointer;
+  }
+
+  .cart-concern {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background: rgba(255,255,255,0.9);
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+  }
+  
+  .product-card:hover .cart-concern {
+    transform: translateY(0);
+  }
+
+  .zoom-active .cart-concern {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .zoom-active {
+    position: relative;
+    z-index: 1000;
+  }
+  
+
+  .card-img {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img img {
+    transition: transform 0.3s ease;
+  }
+  
+  .card-img.zoom-active {
+    z-index: 1000;
+  }
+
+.card-img.zoom-active img {
+  transform-origin: 50% 50%;
+  position: relative;
+  z-index: 1001;
+}
+
+  .dimmed {
+    opacity: 1;
+    filter: none;
+    pointer-events: auto;
+  }
+
+  .social-links a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .social-links a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }
+  
+  .header-top p {
+    font-size: 1rem;
+    color: #000; /* Colore del testo */
+  }
+  
+  .header-top ul li a {
+    color: #000; /* Colore dei link */
+    text-decoration: none;
+  }
+  
+  .header-top ul li a:hover {
+    color: #007bff; /* Colore dei link al passaggio del mouse */
+  }

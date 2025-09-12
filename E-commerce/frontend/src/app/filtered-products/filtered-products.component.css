@@ -1,0 +1,41 @@
+.product-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333; /* Grigio scuro */
+  margin-bottom: 0.5rem;
+  display: block;
+  white-space: normal; /* Assicurati che il testo vada a capo */
+  letter-spacing: normal !important;
+}
+
+
+
+.product-price {
+  font-size: 1rem;
+  color: #666; /* Grigio medio */
+  margin-bottom: 0;
+}
+
+.card {
+  border: 1px solid #ddd; /* Grigio chiaro */
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+  margin-bottom: 1rem; /* Aggiungi margine inferiore */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  width: 100%;
+  height: auto;
+  max-height: 200px; /* Limita l'altezza massima delle immagini */
+  object-fit: cover; /* Mantiene le proporzioni delle immagini */
+}
+
+.card-body {
+  padding: 1.2rem;
+}

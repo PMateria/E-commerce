@@ -1,0 +1,218 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.card-title {
+  font-weight: 500;
+}
+
+.card-text {
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.collection-card {
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.collection-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.swiper-slide {
+  position: relative;
+}
+
+.offset-image {
+  transform: translateY(-20px); /* Adjust the value as needed */
+}
+
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.footer-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #e0e0e0; /* Grigio chiaro */
+  color: #333; /* Grigio scuro */
+  padding: 40px 0;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-section h5 {
+  margin-bottom: 10px;
+  color: #333; /* Grigio scuro */
+  font-size: 1.2rem;
+}
+
+.footer-section ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 5px;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #555; /* Grigio medio */
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #333; /* Grigio scuro */
+}
+
+.footer-contact-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.footer-contact-text span {
+  display: block;
+  color: #555; /* Grigio medio */
+}
+
+.footer-contact-text a {
+  text-decoration: none;
+  color: #555; /* Grigio medio */
+  transition: color 0.3s;
+}
+
+.footer-contact-text a:hover {
+  color: #333; /* Grigio scuro */
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #ccc; /* Grigio chiaro */
+  color: #555; /* Grigio medio */
+}
+
+.footer-bottom a {
+  color: #555; /* Grigio medio */
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-bottom a:hover {
+  color: #333; /* Grigio scuro */
+}
+
+/* Aggiungi queste regole */
+.slider-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+}
+
+.slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Impostazioni per l'immagine del prodotto nel modal */
+#modaltoggle .image-holder img {
+  max-width: 100%; /* La larghezza massima dell'immagine sarà quella del contenitore */
+  height: auto;    /* Mantieni la proporzione dell'immagine */
+  object-fit: contain; /* Assicurati che l'immagine si adatti senza distorsioni */
+}
+/* Custom validation states */
+.form-control:invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.form-control:invalid:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+/* Input group icons */
+.input-group-text {
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within .input-group-text {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Social button hover effect */
+.btn-outline-dark:hover {
+  background-color: transparent;
+  border-color: #000;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+/* Aggiungi questo al tuo file CSS */
+#modallogin .modal-content {
+  background: #fff !important; /* Forza sfondo bianco */
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
+}
+
+#modallogin .modal-header {
+  background: #fff !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+#modallogin .modal-body {
+  background: #fff !important;
+  border-radius: 0 0 12px 12px !important;
+}

@@ -1,0 +1,404 @@
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <title>Stylish - Shoes Online Store HTML Template</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="author" content="TemplatesJungle">
+        <meta name="keywords" content="Online Store">
+        <meta name="description" content="Stylish - Shoes Online Store HTML Template">
+
+        <link rel="stylesheet" href="../../assets/css/vendor.css">
+        <link rel="stylesheet" type="text/css" href="../../styles.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,900;1,900&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"
+          rel="stylesheet">
+      </head>
+      <body>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <!-- Simbolo per la lente (search) -->
+          <symbol id="search" viewBox="0 0 24 24">
+            <path fill="currentColor"
+                  d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396l1.414-1.414l-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8s3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6s-6-2.691-6-6s2.691-6 6-6z"/>
+          </symbol>
+        
+          <!-- Simbolo per la busta (shopping-carriage) -->
+          <symbol id="shopping-carriage" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M5 22H19C20.103 22 21 21.103 21 20V9C21 8.73478 20.8946 8.48043 20.7071 8.29289C20.5196 8.10536 20.2652 8 20 8H17V7C17 4.243 14.757 2 12 2C9.243 2 7 4.243 7 7V8H4C3.73478 8 3.48043 8.10536 3.29289 8.29289C3.10536 8.48043 3 8.73478 3 9V20C3 21.103 3.897 22 5 22ZM9 7C9 5.346 10.346 4 12 4C13.654 4 15 5.346 15 7V8H9V7ZM5 10H7V12H9V10H15V12H17V10H19L19.002 20H5V10Z"
+              fill="black"/>
+          </symbol>
+        
+          <!-- Aggiungi altri simboli se necessario -->
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <symbol xmlns="http://www.w3.org/2000/svg" id="shopping-carriage" viewBox="0 0 24 24" fill="none">
+          </symbol>
+        </svg>
+
+        <header id="header" class="site-header text-black">
+          <div class="header-top border-bottom py-2">
+            <div class="container-lg">
+              <div class="row justify-content-evenly">
+                <div class="col">
+                  <ul class="social-links list-unstyled d-flex m-0">
+                    <li class="pe-2">
+                      <a href="#">
+                        <svg class="facebook" width="20" height="20">
+                          <use xlink:href="#facebook"></use>
+                        </svg>
+                      </a>
+                    </li>
+                    <li class="pe-2">
+                      <a href="#">
+                        <svg class="instagram" width="20" height="20">
+                          <use xlink:href="#instagram"></use>
+                        </svg>
+                      </a>
+                    </li>
+                    <li class="pe-2">
+                      <a href="#">
+                        <svg class="youtube" width="20" height="20">
+                          <use xlink:href="#youtube"></use>
+                        </svg>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <svg class="pinterest" width="20" height="20">
+                          <use xlink:href="#pinterest"></use>
+                        </svg>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col d-none d-md-block">
+                  <p class="text-center text-black m-0"><strong>Special Offer</strong>: Free Shipping on all the orders above $100
+                  </p>
+                </div>
+                <div class="col">
+                  <ul class="d-flex justify-content-end gap-3 list-unstyled m-0">
+                    <li>
+                      <a href="#">Contact</a>
+                    </li>
+                    <li>
+                      <a href="#">Cart</a>
+                    </li>
+                    <li>
+                      <a href="#">Login</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav id="header-nav" class="navbar navbar-expand-lg">
+            <div class="container-lg">
+              <a class="navbar-brand" href="../../index.html">
+                <img src="../../assets/images/main-logo.png" class="logo" alt="logo">
+              </a>
+              <button class="navbar-toggler d-flex d-lg-none order-3 border-0 p-1 ms-2" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#bdNavbar" aria-controls="bdNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <svg class="navbar-icon">
+                  <use xlink:href="#navbar-icon"></use>
+                </svg>
+              </button>
+              <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar">
+                <div class="offcanvas-header px-4 pb-0">
+                  <a class="navbar-brand ps-3" href="../../index.html">
+                    <img src="../../assets/images/main-logo.png" class="logo" alt="logo">
+                  </a>
+                  <button type="button" class="btn-close btn-close-black p-5" data-bs-dismiss="offcanvas" aria-label="Close"
+                    data-bs-target="#bdNavbar"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <ul id="navbar" class="navbar-nav fw-bold justify-content-end align-items-center flex-grow-1">
+                    <li class="nav-item dropdown">
+                      <a class="nav-link me-5 active border-0" href="#">Home</a>
+                      <ul class="dropdown-menu fw-bold">
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link me-5" [routerLink]="['/filtered-products', 'Uomo']">Men</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link me-5" [routerLink]="['/filtered-products', 'Donna']">Woman</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <ul class="dropdown-menu fw-bold">
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link me-5" [routerLink]="['/sale']">Sale</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="user-items ps-0 ps-md-5">
+                <ul class="d-flex justify-content-end list-unstyled align-item-center m-0">
+                  <li class="pe-3">
+                    <a href="login" data-bs-toggle="modal" data-bs-target="#modallogin" class="border-0">
+                      <svg class="user" width="24" height="24">
+                        <use xlink:href="#user"></use>
+                      </svg>
+                    </a>
+                  </li>
+                  <li class="pe-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modallong" class="border-0">
+                      <svg class="shopping-cart" width="24" height="24">
+                        <use xlink:href="#shopping-cart"></use>
+                      </svg>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" class="search-item border-0" data-bs-toggle="collapse" data-bs-target="#search-box" aria-label="Toggle navigation">
+                      <svg class="search" width="10" height="10">
+                        <use xlink:href="#search"></use>
+                      </svg>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+
+        <!-- featured-products-list.component.html -->
+        <section id="featured-products" class="product-store py-5">
+          <div class="container-md">
+            <div class="display-header d-flex align-items-center justify-content-between mb-4">
+              <h2 class="section-title text-uppercase">All Featured Products</h2>
+            </div>
+        
+            <div class="product-content padding-small">
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                <div class="col mb-4" *ngFor="let product of featuredProducts">
+                  <div class="product-card position-relative">
+                    <div class="card-img">
+                      <div class="image-container">
+                        <img [src]="product.immagineUrl || 'assets/images/default-image.jpg'" 
+                            [alt]="product.descrizione" 
+                            class="product-image img-fluid">
+                      </div>
+                      <div class="cart-concern position-absolute d-flex justify-content-center">
+                        <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
+                          <button type="button" 
+                          class="btn btn-light" 
+                          (click)="openCartView(product)" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modallong">
+                    <svg class="shopping-carriage">
+                      <use xlink:href="#shopping-carriage"></use>
+                    </svg>
+                  </button> 
+                  <!-- Search button -->
+                  <button type="button" 
+                          class="btn btn-light" 
+                          (click)="openQuickView(product)" 
+                          data-bs-toggle="modal" 
+                          data-bs-target="#modaltoggle">
+                    <svg class="search">
+                      <use xlink:href="#search"></use>
+                    </svg>
+                  </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-detail d-flex justify-content-between align-items-center mt-3">
+                      <h4 class="card-title fs-6 fw-normal m-0">
+                        {{ product.nome }}
+                      </h4>
+                      <span class="card-price fw-bold">€{{ product.prezzo }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        
+        <!-- Quick view modal -->
+    <div class="modal fade" id="modaltoggle" tabindex="-1" (hidden.bs.modal)="resetQuantity()"
+    (keydown.escape)="resetQuantity()">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="col-lg-12 col-md-12 me-3">
+              <div class="image-holder">
+                <img [src]="selectedProduct?.immagineUrl || 'assets/images/summary-item1.jpg'" 
+                    [alt]="selectedProduct?.descrizione">
+                    
+              </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+              <div class="summary">
+                <div class="summary-content fs-6">
+                  <div class="product-header d-flex justify-content-between mt-4">
+                    <h3 class="display-7">{{selectedProduct?.descrizione}}</h3>
+                    <div class="modal-close-btn">
+                      <button type="button" 
+                      class="btn-close" 
+                      data-bs-dismiss="modal" 
+                      (click)="resetQuantity()" 
+                      aria-label="Close">
+                  </button>  
+                  
+                  </div>
+                  </div>
+                  <span class="product-price fs-3">Sconto : {{selectedProduct?.sconto}} %</span>
+                  <div class="product-details">
+                  </div>
+                  <ul class="select">
+                    <li>
+                      <strong>Quantita: {{selectedProduct?.quantita}}</strong>
+                    </li>
+                    <li>
+                      <strong>€{{selectedProduct?.prezzo}}</strong> 
+                    </li>
+                  </ul>
+                  <div class="variations-form shopify-cart">
+                        <!-- Update quantity controls in modal -->
+                        <div class="quantity d-flex pb-4">
+                          <div class="qty-number qty-number-minus">
+                            <button type="button" 
+                                    (click)="decrementQty()" 
+                                    class="btn btn-light rounded-0 rounded-start btn-number"
+                                    [disabled]="quantity <= 1">
+                              <svg class="minus">
+                                <use xlink:href="#minus"></use>
+                              </svg> -
+                            </button>
+                          </div>
+                        
+                          <input type="number" 
+                                 [(ngModel)]="quantity" 
+                                 class="input-text text-center" 
+                                 min="1" 
+                                 [max]="selectedProduct?.quantita || 1"
+                                 name="quantity">
+                        
+                          <div class="qty-number qty-number-plus">
+                            <button type="button" 
+                                    (click)="incrementQty()"
+                                    class="btn btn-light rounded-0 rounded-end btn-number"
+                                    [disabled]="selectedProduct && quantity >= selectedProduct.quantita">
+                              +
+                              <svg class="plus">
+                                <use xlink:href="#plus"></use>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      <div class="col-md-6">
+                        <a rel="nofollow" data-no-instant="" href="#" class="out-stock button">Out of stock</a>
+                        <button type="submit" class="btn btn-medium btn-black hvr-sweep-to-right">Add to cart</button>
+                      </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- Cart view modal -->
+    <div class="modal fade" id="modallong" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-fullscreen-md-down modal-md modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5">Cart</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="shopping-cart">
+              <div class="shopping-cart-content">
+                <div class="mini-cart cart-list p-0 mt-3">
+                  <div class="mini-cart-item d-flex border-bottom pb-3">
+                    <div class="col-lg-9 col-md-8 col-sm-8">
+                      <div class="product-header d-flex justify-content-between align-items-center mb-3">
+                        <div class="image-holder">
+                          <img [src]="selectedProduct?.immagineUrl || 'assets/images/summary-item1.jpg'" 
+                          [alt]="selectedProduct?.descrizione" 
+                          class="product-image">
+                        </div>
+                      </div>
+                      <div class="product-details" style="margin-left: 10px;">
+                        <h4 class="product-title fs-16 me-5">{{selectedProduct?.nome}}</h4>
+                          <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
+                          data-cart_item_key="abc" data-product_sku="">
+                          <svg class="close">
+                            <use xlink:href="#close"></use>
+                          </svg>
+                        </a>
+                      </div>
+                      <div class="quantity-price d-flex justify-content-between align-items-center">
+                        <div class="quantity d-flex pb-4">
+                          <div class="qty-number qty-number-minus">
+                            <button type="button" 
+                                    (click)="decrementQty()" 
+                                    class="btn btn-light rounded-0 rounded-start btn-number"
+                                    [disabled]="quantity <= 1">
+                              <svg class="minus">
+                                <use xlink:href="#minus"></use>
+                              </svg> -
+                            </button>
+                          </div>
+                        
+                          <input type="number" 
+                                 [(ngModel)]="quantity" 
+                                 class="input-text text-center" 
+                                 min="1" 
+                                 [max]="selectedProduct?.quantita || 1"
+                                 name="quantity">
+                        
+                          <div class="qty-number qty-number-plus">
+                            <button type="button" 
+                                    (click)="incrementQty()"
+                                    class="btn btn-light rounded-0 rounded-end btn-number"
+                                    [disabled]="selectedProduct && quantity >= selectedProduct.quantita">
+                              +
+                              <svg class="plus">
+                                <use xlink:href="#plus"></use>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mini-cart-total d-flex justify-content-between py-4">
+                  <bdi>
+                    <span class="price-currency-symbol"></span>Quantita: {{ selectedProduct?.quantita  }} </bdi>
+  
+                <bdi>
+                  <span class="price-currency-symbol"></span>Totale: €{{ getSubtotal() }}  </bdi>
+
+                  <span class="special-price-code">
+                    <span class="price-amount amount fs-6" style="opacity: 1;">
+                      <bdi>
+                        <span class="price-currency-symbol"></span>Prezzo Unitario: €{{selectedProduct?.prezzo}}  </bdi>
+                    </span>
+                  </span>
+                </div>
+                <div class="modal-footer my-4 justify-content-center">
+                  <button type="button" class="btn btn-red hvr-sweep-to-right dark-sweep">View Cart</button>
+                  <button type="button" class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Checkout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

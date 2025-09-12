@@ -1,0 +1,47 @@
+.input-group.product-qty {
+  display: flex;
+  align-items: center;
+  width: fit-content; /* Adatta la larghezza al contenuto */
+}
+
+.input-group-prepend,
+.input-group-append {
+  flex-shrink: 0;
+}
+
+.btn-number {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #ced4da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-control.input-number {
+  width: 50px !important; /* Larghezza fissa per l'input */
+  text-align: center;
+  border-radius: 0 !important;
+  margin: 0 -1px; /* Elimina il doppio bordo */
+}
+
+.rounded-start {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.rounded-end {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+#modaltoggle .image-holder img {
+max-width: 100%; 
+height: auto;    
+object-fit: contain;
+}
+
+.product-image {
+  max-width: 100%; 
+  height: auto;   
+  object-fit: contain; 
+}
